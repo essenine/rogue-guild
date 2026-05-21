@@ -29,5 +29,17 @@ public class ShopRepository {
 
     public Map<Integer, Item> getAllStock() {
         return stock;
+        
+        
+    }
+    
+    
+    public void addItem(Item item) {
+        int nextId = 1;
+        
+        while (stock.containsKey(nextId)) {
+            nextId++;
+        }
+        stock.put(nextId, item);
     }
 }
