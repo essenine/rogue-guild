@@ -11,5 +11,13 @@ public class Player {
     }
     public String getName() { return name; }
     public int getGold() { return gold; }
-    public void buy(Item item) { this.gold -= item.getPrice(); this.inventory.add(item); }
+    public void buy(Item item) { this.gold -= item.getPrice(); 
+    //this.inventory.add(item); 
+    	addItem(item);
+    }
+ 
+    public void addItem(Item item) {
+    	inventory.addLast(item);
+    }
+    
 }
