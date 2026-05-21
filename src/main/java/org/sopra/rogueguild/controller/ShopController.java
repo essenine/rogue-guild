@@ -57,7 +57,7 @@ public class ShopController {
         if (item == null) {
             return BuyResponse.notFound(id);
         }
-        if (player.getGold() < item.getPrice()) {
+        if (player.getGold() < item.getBasePrice()) {
             return BuyResponse.notEnoughGold(item, player.getGold());
         }
         player.buy(item);

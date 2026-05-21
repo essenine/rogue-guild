@@ -11,6 +11,7 @@ public class Player {
     }
     public String getName() { return name; }
     public int getGold() { return gold; }
+<<<<<<< HEAD
     public void buy(Item item) { this.gold -= item.getPrice(); this.inventory.add(item); }
     
     public void removeItem(Item item) {
@@ -41,4 +42,16 @@ public class Player {
     public List<Item> getInventory() {
         return this.inventory;
     }
+=======
+    public void buy(Item item) { this.gold -= item.getBasePrice(); 
+    //this.inventory.add(item); 
+    addItem(item);
+    	
+    }
+ 
+    public void addItem(Item item) {
+    	inventory.addLast(item);
+    }
+    
+>>>>>>> branch 'main' of https://github.com/essenine/rogue-guild.git
 }
