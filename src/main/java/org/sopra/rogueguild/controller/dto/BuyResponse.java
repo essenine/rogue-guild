@@ -26,7 +26,7 @@ public class BuyResponse {
     }
 
     public static BuyResponse notEnoughGold(Item item, int playerGold) {
-        int missing = item.getPrice() - playerGold;
+        int missing = item.getBasePrice() - playerGold;
         return new BuyResponse(Status.NOT_ENOUGH_GOLD, item, missing, null);
     }
 
