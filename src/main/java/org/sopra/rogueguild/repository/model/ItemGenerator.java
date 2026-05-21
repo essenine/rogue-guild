@@ -111,7 +111,7 @@ public class ItemGenerator {
 	
 	
 	public Item generate() {
-		
+		Item item = null;
 		int randomNumberPrefixType = ((int) (Math.random() * 5) +1)-1;
 		int randomNumberSuffixType = ((int) (Math.random() *4 ) +1)-1;
 		int random0to4 = ((int) (Math.random() *5 ) +1)-1;
@@ -127,7 +127,8 @@ public class ItemGenerator {
 		String generatedName = generatedPrefix+" "+generatedSuffix;
 		int price =0;
 		ItemCategory category = ItemCategory.valueOf(prefixType);
-		Item item = new Item(generatedName,price, category);
+		item = new Item(generatedName, price, category) {
+		};
 		return item;
 	}
 }
