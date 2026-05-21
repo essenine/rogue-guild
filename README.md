@@ -1,0 +1,2 @@
+# rogue-guild
+Proyecto Prácticas
