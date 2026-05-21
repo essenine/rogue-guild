@@ -9,7 +9,7 @@ import org.sopra.rogueguild.view.ViewDisplay;
 // prueba marc
 public class App {
     public static void main(String[] args) {
-       ShopRepository repository = new ShopRepository();
+    	ShopRepository repository = new ShopRepository();
         ViewDisplay view = new ViewDisplay();
 
         Player player = new Player( "Iñigo Montolla", 500);

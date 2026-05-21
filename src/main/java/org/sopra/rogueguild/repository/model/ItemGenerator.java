@@ -108,27 +108,63 @@ public class ItemGenerator {
 		return suffixes;
 	}
 
+	private int generatePrice(String prefixType) {
+		int generatedPrice = 0;
+		/*ARMOR: entre 50 y 200
+
+BOOTS: entre 20 y 100
+
+HELMET: entre 20 y 150
+
+WEAPON: entre 100 y 300
+
+POTION: entre 10 y 40
+		 * 
+		 * */
+		switch (prefixType) {
+		case "ARMOR": {
+		generatedPrice = (((int)(Math.random() * 200) + 50) / 5) * 5;
+		break;
+		}
+		case "BOOTS": {
+			generatedPrice = (((int)(Math.random() * 81) + 20) / 5) * 5;
+		break;
+			}
+		case "HELMET": {
+			generatedPrice = (((int)(Math.random() * 131) + 20) / 5) * 5;	
+		break;
+			}
+		case "WEAPON": {
+			generatedPrice = (((int)(Math.random() * 201) + 100) / 5) * 5;
+		break;
+			}
+		case "POTION": {
+			generatedPrice = (((int)(Math.random() * 31) + 10) / 5) * 5;
+		break;
+			}
+		default:
+			generatedPrice=0;
+		}
+		return generatedPrice;
+	}
 	
 	
 	public Item generate() {
-		Item item = null;
+		
 		int randomNumberPrefixType = ((int) (Math.random() * 5) +1)-1;
 		int randomNumberSuffixType = ((int) (Math.random() *4 ) +1)-1;
 		int random0to4 = ((int) (Math.random() *5 ) +1)-1;
 		String prefixType = prefixesTypes[randomNumberPrefixType];
-		String prefixLowerCase = prefixType.toLowerCase();
 		String suffixType = suffixesTypes[randomNumberSuffixType];
-		String suffixLowerCase = suffixType.toLowerCase();
 		String[] arrayGeneratedPrefix = prefixes.get(prefixType); 
 		String generatedPrefix = arrayGeneratedPrefix[random0to4];
 		random0to4 = ((int) (Math.random() *5 ) +1)-1;
 		String[] arrayGeneratedSuffix = suffixes.get(suffixType);
-		String generatedSuffix = arrayGeneratedPrefix[random0to4];
+		String generatedSuffix = arrayGeneratedSuffix[random0to4];
 		String generatedName = generatedPrefix+" "+generatedSuffix;
-		int price =0;
+		int price = generatePrice(prefixType);
 		ItemCategory category = ItemCategory.valueOf(prefixType);
-		item = new Item(generatedName, price, category) {
-		};
+		Item item = new Item(generatedName, price, category) {};
 		return item;
 	}
 }

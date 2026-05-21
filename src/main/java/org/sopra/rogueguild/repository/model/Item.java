@@ -9,7 +9,7 @@ public abstract class Item {
     public Item(String name, int price, ItemCategory category) {
         this.name = name;
         this.price = price;
-        BASE_PRICE = price;
+        BASE_PRICE = this.price;
         this.category = category;
     }
 
