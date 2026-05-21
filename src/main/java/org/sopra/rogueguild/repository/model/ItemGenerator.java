@@ -2,6 +2,12 @@ package org.sopra.rogueguild.repository.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import org.sopra.rogueguild.controller.ShopController;
+import org.sopra.rogueguild.repository.ShopRepository;
 
 public class ItemGenerator {
 	private HashMap<String, String[]> prefixes;
@@ -110,17 +116,7 @@ public class ItemGenerator {
 
 	private int generatePrice(String prefixType) {
 		int generatedPrice = 0;
-		/*ARMOR: entre 50 y 200
 
-BOOTS: entre 20 y 100
-
-HELMET: entre 20 y 150
-
-WEAPON: entre 100 y 300
-
-POTION: entre 10 y 40
-		 * 
-		 * */
 		switch (prefixType) {
 		case "ARMOR": {
 		generatedPrice = (((int)(Math.random() * 200) + 50) / 5) * 5;
@@ -148,23 +144,69 @@ POTION: entre 10 y 40
 		return generatedPrice;
 	}
 	
-	
-	public Item generate() {
+	private boolean itemExists(ShopRepository repository, String name) {
+		boolean itemExists= false;
+		Map<Integer, Item> actualStock = repository.getAllStock();
+		itemExists =actualStock.containsValue(actualStock);
+		Set<Entry<Integer, Item>> set = actualStock.entrySet();
+		for (Entry<Integer, Item> item : set) {
+			if (item.getValue().getName().equals(name)) {
+				itemExists=true;
+			}
+		}
+		return itemExists;
+	}
+
+	public Item generate(ShopRepository repository) {
 		
 		int randomNumberPrefixType = ((int) (Math.random() * 5) +1)-1;
 		int randomNumberSuffixType = ((int) (Math.random() *4 ) +1)-1;
 		int random0to4 = ((int) (Math.random() *5 ) +1)-1;
+		
 		String prefixType = prefixesTypes[randomNumberPrefixType];
 		String suffixType = suffixesTypes[randomNumberSuffixType];
+		
 		String[] arrayGeneratedPrefix = prefixes.get(prefixType); 
 		String generatedPrefix = arrayGeneratedPrefix[random0to4];
+		
 		random0to4 = ((int) (Math.random() *5 ) +1)-1;
 		String[] arrayGeneratedSuffix = suffixes.get(suffixType);
 		String generatedSuffix = arrayGeneratedSuffix[random0to4];
+		
 		String generatedName = generatedPrefix+" "+generatedSuffix;
 		int price = generatePrice(prefixType);
 		ItemCategory category = ItemCategory.valueOf(prefixType);
-		Item item = new Item(generatedName, price, category) {};
+		int extraAttributeRandom = ((int) (Math.random() * 100 ) +1);
+		Item item = null; 
+		if(!itemExists(repository, generatedName)) {
+		switch (category) {
+		case WEAPON: {
+			 item = new Weapon(generatedName, price, extraAttributeRandom);
+			 break;
+		}
+		case ARMOR: {
+			item = new Armor(generatedName, price, extraAttributeRandom);
+			break;
+		}
+		case POTION:{
+			item = new Potion(generatedName, price, extraAttributeRandom);
+			break;
+		}
+		case HELMET:{
+			item = new Helmet(generatedName, price, extraAttributeRandom);
+			break;
+		}
+		case BOOTS:{
+			item = new Boots(generatedName, price, extraAttributeRandom);
+			break;
+		}
+		default:
+			System.out.println("Item couldn't be generated.");
+			break;
+		}
+		} else {
+			item = generate(repository);
+		}
 		return item;
 	}
 }
