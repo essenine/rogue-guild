@@ -1,0 +1,147 @@
+********************************************************************************
+*                                                                              *
+*               ROGUE GUILD - FUNCIONALIDADES A IMPLEMENTAR                    *
+*                                                                              *
+********************************************************************************
+
+Implementa las siguientes funcionalidades en la aplicación.
+(Todos los cálculos de precios deben redondearse a múltiplos de cinco).
+
+================================================================================
+[ LÓGICA DE VENTA E INVENTARIO ]
+================================================================================
+
+1. GESTIÓN DEL INVENTARIO (CASE 3):
+   - Modificar la clase 'Player' para incluir un atributo:
+     - List<Item> inventory
+   - Implementar los métodos:
+     - addItem(Item item)
+     - removeItem(Item item)
+   - Al comprar un objeto en la tienda (CASE 2), este debe añadirse
+     automáticamente al inventario del jugador.
+
+2. PROCESO DE VENTA:
+   - El sistema debe mostrar el inventario actual del jugador con un ID
+     asociado a cada objeto.
+   - El jugador selecciona el ID del objeto que desea vender.
+   - LÓGICA DE VENTA:
+     a) Eliminar el objeto del inventario del jugador.
+     b) Añadir el objeto de nuevo al ShopRepository (stock de la tienda).
+     c) Sumar oro al jugador aplicando una comisión del 20 %.
+     d) Mostrar el mensaje:
+        "Has vendido [Nombre] por [Oro] monedas."
+
+================================================================================
+[ SISTEMA DE EVENTOS ALEATORIOS ]
+================================================================================
+
+1. DISPARADOR DEL EVENTO:
+   - Cada vez que se ejecute el método 'start()' del controlador
+     (entrada a la tienda), se debe generar un WorldEvent aleatorio.
+
+2. IMPACTO EN PRECIOS:
+   - Si el evento afecta a una categoría concreta (ItemCategory):
+     - Recorrer el stock de la tienda.
+     - Multiplicar el precio de los ítems de dicha categoría por el
+       factor del evento.
+   - Si el evento afecto a todos los objetos:
+     - Aplicar el multiplicador a todo el stock.
+   - RECOMENDACIÓN:
+     - Añadir el atributo 'basePrice' en Item para evitar que los
+       eventos se acumulen infinitamente.
+
+================================================================================
+[ CASE 4: SISTEMA DE INCURSIONES ]
+================================================================================
+
+1. MODELO DE INCURSIÓN:
+   - Crear la clase 'Raid' con:
+     - shortName
+     - description
+     - goldReward
+     - itemReward
+   - Una incursión puede otorgar:
+     - Oro y un ítem menor.
+     - Solo oro.
+     - Solo un ítem mayor.
+
+2. FLUJO DE INCURSIONES:
+   - Tras finalizar una incursión:
+     - El jugador recibe su recompensa.
+     - Se generan nuevos ítems para la tienda sin eliminar los existentes.
+
+3. MENÚ DE INCURSIONES:
+   - Mostrar un menú de selección por índice:
+     - Incursión para obtener equipo.
+     - Incursión para obtener oro.
+   - Mostrar el mensaje final:
+     "Has obtenido [goldReward] monedas y el objeto [itemReward]."
+
+4. GENERADOR DE ÍTEMS:
+   - Crear la clase 'ItemGenerator' que devuelve un nuevo objeto.
+   - Los ítems generados deben cumplir:
+     - Tener tipo (WEAPON, ARMOR, HELMET, BOOTS, POTION, OTHERS).
+     - Nombre compuesto por tipo y elemento:
+       Ejemplo: "Espada de fuego infernal", "Armadura de Mithril".
+     - No se pueden generar ítems con nombre repetido.
+     - El rango de los precios de los ítems dependen de su tipo:
+
+   - RANGO PRECIOS POR TIPO:
+     - ARMOR: 50 - 200
+     - BOOTS: 20 - 100
+     - HELMET: 20 - 150
+     - WEAPON: 100 - 300
+     - POTION: 10 - 40
+     - OTHERS: 250 - 750
+
+   - PROGRAMACIÓN BONUS:
+     - OTHERS (piedras preciosas, metales exóticos, objetos valiosos...)
+     - Probabilidad de aparición: 5 %.
+     - Valor entre 250 y 300.
+
+================================================================================
+[ CASE 5: SISTEMA DE MISIONES ]
+================================================================================
+
+1. MODELO DE MISIÓN:
+   - Crear la clase 'Quest' con:
+     - description
+     - goldReward
+     - requiredItems
+     - isCompleted
+   - Implementar el método:
+     - checkRequirement(Player player)
+
+2. MISIONES DE EJEMPLO:
+   - "Danza de la muerte":
+     - Requiere tener al menos 2 objetos de tipo WEAPON.
+   - "Caballero del Fénix":
+     - Requiere tener al menos un objeto de cada tipo:
+       WEAPON, HELMET, ARMOR y BOOTS.
+
+3. LÓGICA DE MISIONES:
+   - Añadir una opción de menú:
+     - "Mostrar misiones disponibles".
+   - En este menú se mostrarán todas las misiones no completadas con su número (del 1 al 9).
+   - El jugador selecciona la misión.
+   - Si cumple los requisitos:
+     - isCompleted pasa a true.
+     - El jugador recibe la recompensa en oro.
+
+4. PROGRAMACIÓN BONUS: SISTEMA DE EQUIPAMIENTO Y MISIONES AVANZADAS
+   - Añadir sistema de ítems equipados en el jugador:
+     - ARMOR: máximo 1
+     - BOOTS: máximo 1
+     - HELMET: máximo 1
+     - WEAPON: máximo 2
+   - Al equipar:
+     - Cuando equipas un ítem reemplaza siempre al anterior del mismo tipo.
+          - En armas, se reemplaza la de menor daño.
+          - Si el daño es igual, se reemplaza la primera.
+   - Añadir misiones con requisitos de:
+     - Armadura mínima equipada.
+     - Ataque mínimo equipado.
+
+********************************************************************************
+*              "LA FORTUNA FAVORECE A LOS QUE SABEN PROGRAMAR"                 *
+********************************************************************************
