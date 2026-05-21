@@ -33,5 +33,12 @@ public class Player {
         
     }
     
-    
+    public void addGold(int amount) {
+        this.gold += amount;
+    }
+
+   
+    public List<Item> getInventory() {
+        return this.inventory;
+    }
 }
