@@ -8,14 +8,14 @@ import org.sopra.rogueguild.repository.model.ItemGenerator;
 import org.sopra.rogueguild.repository.model.Player;
 import org.sopra.rogueguild.view.ViewDisplay;
 import org.sopra.rogueguild.controller.dto.BuyResponse;
+import org.sopra.rogueguild.event.WorldEvent;
 
 public class ShopController {
     private final Player player;
     private final ViewDisplay view;
     private final ShopRepository repository;
     private final Scanner sc;
- 
-
+  
     public ShopController(Player p, ViewDisplay v, ShopRepository r) {
         this.player = p;
         this.view = v;
@@ -25,6 +25,8 @@ public class ShopController {
 
     public void start() {
         int opt;
+        WorldEvent worldEvent = new WorldEvent(repository);
+    	view.eventStatus(worldEvent);
         do {
             view.landingPage();
             view.playerStatus(player);

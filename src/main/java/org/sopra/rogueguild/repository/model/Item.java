@@ -18,6 +18,9 @@ public abstract class Item {
     public void setPrice(int price) {
     	this.price = price;
     }
+    public ItemCategory getCategory() {
+    	return category;
+    }
     public int getBasePrice() {
     	return BASE_PRICE;
     }

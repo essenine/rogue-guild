@@ -5,8 +5,10 @@ import java.util.Map;
 import org.sopra.rogueguild.repository.model.Item;
 import org.sopra.rogueguild.repository.model.Player;
 import org.sopra.rogueguild.controller.dto.BuyResponse;
+import org.sopra.rogueguild.event.WorldEvent;
 import org.sopra.rogueguild.view.components.BannerView;
 import org.sopra.rogueguild.view.components.BuyResultView;
+import org.sopra.rogueguild.view.components.EventView;
 import org.sopra.rogueguild.view.components.MessageView;
 import org.sopra.rogueguild.view.components.PlayerView;
 import org.sopra.rogueguild.view.components.StockView;
@@ -17,6 +19,7 @@ public class ViewDisplay {
     private final PlayerView playerView;
     private final StockView stockView;
     private final BuyResultView buyResultView;
+    private final EventView eventView;
 
     public ViewDisplay() {
         this(System.out, 59);
@@ -28,6 +31,7 @@ public class ViewDisplay {
         this.playerView = new PlayerView(out);
         this.stockView = new StockView(out);
         this.buyResultView = new BuyResultView(messages);
+        this.eventView = new EventView(out);
     }
 
     public void landingPage() { banner.landingPage(); }
@@ -37,7 +41,9 @@ public class ViewDisplay {
     public void showPrompt(String prompt) { messages.showPrompt(prompt); }
 
     public void playerStatus(Player player) { playerView.playerStatus(player); }
-
+    public void eventStatus(WorldEvent event) {
+    	eventView.eventStatus(event);
+    }
     public void displayStock(Map<Integer, Item> itemMap, boolean isInPurchaseProcess) {
         stockView.displayStock(itemMap, isInPurchaseProcess);
     }
