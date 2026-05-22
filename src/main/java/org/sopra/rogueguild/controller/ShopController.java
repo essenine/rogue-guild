@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import org.sopra.rogueguild.repository.ShopRepository;
 import org.sopra.rogueguild.repository.model.Item;
+import org.sopra.rogueguild.repository.model.ItemGenerator;
 import org.sopra.rogueguild.repository.model.Player;
 import org.sopra.rogueguild.view.ViewDisplay;
 import org.sopra.rogueguild.controller.dto.BuyResponse;
@@ -13,6 +14,7 @@ public class ShopController {
     private final ViewDisplay view;
     private final ShopRepository repository;
     private final Scanner sc;
+ 
 
     public ShopController(Player p, ViewDisplay v, ShopRepository r) {
         this.player = p;
@@ -68,4 +70,6 @@ public class ShopController {
     private void sellProcess(Item item) {
         //TODO Sell process
     }
+    
+   
 }

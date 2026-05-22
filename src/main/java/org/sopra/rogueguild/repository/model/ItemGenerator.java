@@ -208,5 +208,7 @@ public class ItemGenerator {
 			item = generate(repository);
 		}
 		return item;
+		//VERIFICAR SISTEMA DE INCURSIONES????
 	}
+	
 }

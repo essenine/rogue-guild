@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.sopra.rogueguild.repository.model.Armor;
 import org.sopra.rogueguild.repository.model.Item;
+import org.sopra.rogueguild.repository.model.ItemGenerator;
 import org.sopra.rogueguild.repository.model.Weapon;
 
 public class ShopRepository {
@@ -33,6 +34,11 @@ public class ShopRepository {
         
     }
     
+    public void addRandomItem() {
+    	ItemGenerator generator = new ItemGenerator();
+    	Item item = generator.generate(this);
+    	addItem(item);
+    }
     
     public void addItem(Item item) {
         int nextId = 1;
