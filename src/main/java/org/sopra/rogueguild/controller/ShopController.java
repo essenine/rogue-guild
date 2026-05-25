@@ -18,6 +18,7 @@ public class ShopController {
     private final ShopRepository repository;
     private final Scanner sc;
     private int goldRewardAcummulation;
+    
   
     public ShopController(Player p, ViewDisplay v, ShopRepository r) {
         this.player = p;
@@ -53,7 +54,7 @@ public class ShopController {
                     		System.out.println("No has obtenido oro. Tu item de recompensa es "+incursion.getItemReward().getName());
                     		player.addItem(incursion.getItemReward());
                     	}
-                    	else if( incursion.getItemReward().equals(null)) {
+                    	else if( incursion.getItemReward() ==null) {
                     		System.out.println("No tienes item. Tu recompensa de oro es de "+incursion.getGoldReward()+ " oro.");
                     		actualGoldReward = incursion.getGoldReward();
                     		goldRewardAcummulation += incursion.getGoldReward();
@@ -96,9 +97,13 @@ public class ShopController {
 		} else {
 		System.out.println("No se puede sobrepasar de 500 monedas de oro. ");
 		int goldDifference = 500- (goldRewardAcummulation -actualGoldReward);
+		if( goldDifference >0 ) {
 		System.out.println("Tu recompensa en oro pasa de "+actualGoldReward+" a"+ goldDifference+" oro.");
 		player.addGold(goldDifference);
 		System.out.println("Se ha añadido "+ goldDifference+" oro a tu inventario");
+		} else {
+			System.out.println("No se añade ningún oro a tu inventario");
+		}
 		goldRewardAcummulation=501;
 		}
 		
@@ -106,8 +111,10 @@ public class ShopController {
 
 	private  Incursion selectIncursion() {
     	view.showIncursion();
-    	int opt = Integer.parseInt(sc.nextLine());
     	Incursion incursion= null;
+    	try {
+    	int opt = Integer.parseInt(sc.nextLine());
+    	
     	switch(opt) {
     	case 1:
     		 incursion = generateCoquerIncursion();
@@ -127,7 +134,12 @@ public class ShopController {
     	
     		break;
     	}
+    	}
+    	catch(Exception e) {
+    		System.out.println("Solo valores del 1-4. Saliendo de incursiones...");
+    	}
     	return incursion;
+    	
    
     	
     }
@@ -144,9 +156,11 @@ public class ShopController {
     
     private Item generateMinorItem() {
     	Item item = null;
+    	ItemGenerator generator = new ItemGenerator();
+    	
     	boolean isLowValue = false;
     	while (!isLowValue) {
-    		 item = generateHighValueItem();
+    		 item = generator.generate(repository);
     		 if(item.getBasePrice() <= 50) {
     			 isLowValue=true;
     		 }
@@ -172,11 +186,12 @@ public class ShopController {
     //es de bajo valor por su tipo o por el dinero??
     private Item generateLowValueItem() {
     	Item item = null;
+    	ItemGenerator generator =  new ItemGenerator();
     	boolean isLowValue = false;
     	ItemCategory potion = ItemCategory.POTION;
     	ItemCategory boots = ItemCategory.BOOTS;
     	while (!isLowValue) {
-    		 item = generateHighValueItem();
+    		 item = generator.generate(repository);
     		 if(item.getCategory().equals(potion)) {
     			 isLowValue=true;
     		 }
@@ -205,12 +220,13 @@ public class ShopController {
     
     private Item generateHighValueItem() {
     	Item item = null;
+    	ItemGenerator generator = new ItemGenerator();
     	boolean isHighValue = false;
     	ItemCategory armor = ItemCategory.ARMOR;
     	ItemCategory helmet = ItemCategory.HELMET;
     	ItemCategory weapon = ItemCategory.WEAPON;
     	while (!isHighValue) {
-    		 item = generateHighValueItem();
+    		 item = generator.generate(repository);
     		 if(item.getCategory().equals(armor)) {
     			 isHighValue=true;
     		 }
