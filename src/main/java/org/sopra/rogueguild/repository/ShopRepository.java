@@ -48,4 +48,17 @@ public class ShopRepository {
         }
         stock.put(nextId, item);
     }
+    
+    public void refreshStock() {
+       
+        this.stock.clear();
+        
+        ItemGenerator generator = new ItemGenerator();
+        
+        for (int id = 1; id <= 3; id++) {
+         
+            Item newItem = generator.generate(this);
+            this.stock.put(id, newItem);
+        }
+    }
 }

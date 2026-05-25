@@ -45,7 +45,12 @@ public class ShopController {
                     // TODO Logic to sell and add products to stock
                     break;
                 case 4:
-                    // TODO Logic to ...
+                	System.out.println("");
+                    System.out.println("[!] Regresas de la incursion con exito.");
+
+                   
+                    repository.refreshStock();
+                    System.out.println("[INFO] El mercader ha renovado su stock con nuevos generos.");
                     break;
                 case 0:
                     view.quitMessage();
