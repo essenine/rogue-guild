@@ -9,7 +9,7 @@ public abstract class Item {
     public Item(String name, int price, ItemCategory category) {
         this.name = name;
         this.price = price;
-        BASE_PRICE = price;
+        BASE_PRICE = this.price;
         this.category = category;
     }
 
@@ -17,6 +17,9 @@ public abstract class Item {
     public int getPrice() { return price; }
     public void setPrice(int price) {
     	this.price = price;
+    }
+    public ItemCategory getCategory() {
+    	return category;
     }
     public int getBasePrice() {
     	return BASE_PRICE;
