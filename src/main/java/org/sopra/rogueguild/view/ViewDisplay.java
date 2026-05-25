@@ -10,6 +10,7 @@ import org.sopra.rogueguild.event.WorldEvent;
 import org.sopra.rogueguild.view.components.BannerView;
 import org.sopra.rogueguild.view.components.BuyResultView;
 import org.sopra.rogueguild.view.components.EventView;
+import org.sopra.rogueguild.view.components.IncursionView;
 import org.sopra.rogueguild.view.components.MessageView;
 import org.sopra.rogueguild.view.components.PlayerView;
 import org.sopra.rogueguild.view.components.StockView;
@@ -21,6 +22,7 @@ public class ViewDisplay {
     private final StockView stockView;
     private final BuyResultView buyResultView;
     private final EventView eventView;
+    private final IncursionView incursionView;
 
     public ViewDisplay() {
         this(System.out, 59);
@@ -33,6 +35,7 @@ public class ViewDisplay {
         this.stockView = new StockView(out);
         this.buyResultView = new BuyResultView(messages);
         this.eventView = new EventView(out);
+        this.incursionView = new IncursionView(out);
     }
 
     public void landingPage() { banner.landingPage(); }
@@ -51,6 +54,10 @@ public class ViewDisplay {
 
     public void buyResult(BuyResponse r) {
         buyResultView.show(r);
+    }
+    
+    public void showIncursion() {
+    	incursionView.incursionPage();
     }
     
     public void displayPlayerInventory(List<Item> inventory) {
