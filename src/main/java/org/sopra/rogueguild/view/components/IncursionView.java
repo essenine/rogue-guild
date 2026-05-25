@@ -23,7 +23,7 @@ public class IncursionView {
         out.println("|| |  [1] Incursión de conquista                   | ||");
         out.println("|| |  [2] Incursión de saqueo                      | ||");
         out.println("|| |  [3] Incursión menor                          | ||");
-        out.println("|| |" + c(Ansi.GRAY, "  [0] Salir                                    ") + "| ||");
+        out.println("|| |" + c(Ansi.GRAY, "  [4] Salir                                    ") + "| ||");
         out.println("|| \\_______________________________________________/ ||");
         out.println(" \\___________________________________________________/");
     }
