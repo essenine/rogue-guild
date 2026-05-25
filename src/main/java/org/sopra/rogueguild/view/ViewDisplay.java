@@ -1,5 +1,6 @@
 package org.sopra.rogueguild.view;
 import java.io.PrintStream;
+import java.util.List;
 import java.util.Map;
 
 import org.sopra.rogueguild.repository.model.Item;
@@ -44,5 +45,20 @@ public class ViewDisplay {
 
     public void buyResult(BuyResponse r) {
         buyResultView.show(r);
+    }
+    
+    public void displayPlayerInventory(List<Item> inventory) {
+        System.out.println("--- TU INVENTARIO DE OBJETOS ---");
+        
+       
+        for (int i = 0; i < inventory.size(); i++) {
+            Item item = inventory.get(i);
+            
+            int id = i + 1;
+            
+            
+            System.out.println("[" + id + "] " + item.getName() + " - " + item.getPrice() + " oro");
+        }
+        System.out.println("--------------------------------");
     }
 }

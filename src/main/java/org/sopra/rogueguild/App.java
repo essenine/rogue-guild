@@ -5,7 +5,7 @@ import org.sopra.rogueguild.repository.ShopRepository;
 import org.sopra.rogueguild.repository.model.Player;
 import org.sopra.rogueguild.view.ViewDisplay;
 //		prueba sara
-// prueba marc
+//      prueba marc
 public class App {
     public static void main(String[] args) {
         ShopRepository repository = new ShopRepository();
