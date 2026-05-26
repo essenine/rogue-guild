@@ -183,23 +183,29 @@ public class ShopController {
     
     
     
-    //es de bajo valor por su tipo o por el dinero??
+  
     private Item generateLowValueItem() {
     	Item item = null;
-    	ItemGenerator generator =  new ItemGenerator();
+    	ItemGenerator generator = new ItemGenerator();
     	boolean isLowValue = false;
-    	ItemCategory potion = ItemCategory.POTION;
+    	ItemCategory armor = ItemCategory.ARMOR;
+    	ItemCategory helmet = ItemCategory.HELMET;
+    	ItemCategory weapon = ItemCategory.WEAPON;
     	ItemCategory boots = ItemCategory.BOOTS;
+    	ItemCategory potion = ItemCategory.POTION;
     	while (!isLowValue) {
     		 item = generator.generate(repository);
-    		 if(item.getCategory().equals(potion)) {
-    			 isLowValue=true;
-    		 }
-    		 else if(item.getCategory().equals(boots)) {
-    			 isLowValue=true;
-    		 }
+    		 if(item.getCategory().equals(armor) && item.getBasePrice() <=100) {
+    		isLowValue=true;
+    	} else if(item.getCategory().equals(boots) && item.getBasePrice() <=50) {
+    		isLowValue=true; 
+    	} else if (item.getCategory().equals(helmet) && item.getBasePrice() <= 70 ) {
+    		isLowValue=true;  
+    	} else if (item.getCategory().equals(weapon) && item.getBasePrice() <= 150 ) {
+    		isLowValue=true;  
+    	}else if (item.getCategory().equals(potion) && item.getBasePrice() <= 25 ) {
+    		isLowValue=true;  }
     	}
- 
     	return item;
 	}
 
@@ -216,7 +222,7 @@ public class ShopController {
 		Incursion conquer = new Incursion("conquer", "Conquistando... ", goldReward, itemReward);
     	return conquer;
     }
-    
+
     
     private Item generateHighValueItem() {
     	Item item = null;
@@ -225,20 +231,21 @@ public class ShopController {
     	ItemCategory armor = ItemCategory.ARMOR;
     	ItemCategory helmet = ItemCategory.HELMET;
     	ItemCategory weapon = ItemCategory.WEAPON;
+    	ItemCategory boots = ItemCategory.BOOTS;
+    	ItemCategory potion = ItemCategory.POTION;
     	while (!isHighValue) {
     		 item = generator.generate(repository);
-    		 if(item.getCategory().equals(armor)) {
-    			 isHighValue=true;
-    		 }
-    		 else if(item.getCategory().equals(helmet)) {
-    			 isHighValue=true;
-    		 }
-    		 else if(item.getCategory().equals(weapon)) {
-    			 isHighValue=true;
-    		 }
+    		 if(item.getCategory().equals(armor) && item.getBasePrice() >100) {
+    		isHighValue=true;
+    	} else if(item.getCategory().equals(boots) && item.getBasePrice() >50) {
+    		isHighValue=true; 
+    	} else if (item.getCategory().equals(helmet) && item.getBasePrice() > 70 ) {
+    		isHighValue=true;  
+    	} else if (item.getCategory().equals(weapon) && item.getBasePrice() > 150 ) {
+    		isHighValue=true;  
+    	}else if (item.getCategory().equals(potion) && item.getBasePrice() > 25 ) {
+    		isHighValue=true;  }
     	}
-    	
-    	
     	return item;
     }
     
