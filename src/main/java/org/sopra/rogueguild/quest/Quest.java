@@ -25,7 +25,6 @@ public class Quest {
 		this.requiredItems = requiredItems;
 	}
 
-
 	public boolean checkRequirement(Player p) {
 		boolean checksRequirement = false;
 		List<Item> inventory = p.getInventory();
