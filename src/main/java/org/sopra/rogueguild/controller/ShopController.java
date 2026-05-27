@@ -92,6 +92,7 @@ public class ShopController {
                 	}
                 	
                 	//prueba 2
+                	//pruebafdfds
                 	
                 	break;
                 case 4:
