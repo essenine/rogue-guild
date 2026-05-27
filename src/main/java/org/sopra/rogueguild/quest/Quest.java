@@ -10,17 +10,19 @@ public class Quest {
 	private int goldReward;
 	private List<Item> requiredItems;
 	private boolean isCompleted = false;
+	private String title;
 	
 	
 	
 	
-	public Quest(String description, int goldReward, List<Item> requiredItems) {
+	public Quest(String title, String description, int goldReward, List<Item> requiredItems) {
 		super();
+		this.title = title;
 		this.description = description;
 		if((this.goldReward/5) == 0 ) {
 			this.goldReward = goldReward;
 		} else {
-			goldReward = (this.goldReward / 5)*5;
+			this.goldReward = (int) (Math.round(goldReward / 5.0) * 5);
 		}
 		this.requiredItems = requiredItems;
 	}
@@ -55,6 +57,11 @@ public class Quest {
 		return isCompleted;
 	}
 	
+	public String getTitle() {
+		return title;
+	}
 	
-	
+	public void setCompleted(boolean isCompleted) {
+		this.isCompleted = isCompleted;
+	}
 }

@@ -1,5 +1,7 @@
 package org.sopra.rogueguild.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import org.sopra.rogueguild.repository.ShopRepository;
@@ -7,9 +9,14 @@ import org.sopra.rogueguild.repository.model.Item;
 import org.sopra.rogueguild.repository.model.ItemCategory;
 import org.sopra.rogueguild.repository.model.ItemGenerator;
 import org.sopra.rogueguild.repository.model.Player;
+import org.sopra.rogueguild.repository.model.Weapon;
 import org.sopra.rogueguild.view.ViewDisplay;
 import org.sopra.rogueguild.controller.dto.BuyResponse;
 import org.sopra.rogueguild.event.WorldEvent;
+import org.sopra.rogueguild.quest.Quest;
+import org.sopra.rogueguild.repository.model.Armor;
+import org.sopra.rogueguild.repository.model.Boots;
+import org.sopra.rogueguild.repository.model.Helmet;
 import org.sopra.rogueguild.repository.model.Incursion;
 
 public class ShopController {
@@ -18,13 +25,29 @@ public class ShopController {
     private final ShopRepository repository;
     private final Scanner sc;
     private int goldRewardAcummulation;
-    
+    private final List<Quest> quests;
   
     public ShopController(Player p, ViewDisplay v, ShopRepository r) {
         this.player = p;
         this.view = v;
         this.repository = r;
         this.sc = new Scanner(System.in);
+        
+        this.quests = new ArrayList<Quest>();
+
+      
+        List<Item> reqDanza = new ArrayList<Item>();
+        reqDanza.add(new Weapon("Daga de las Sombras", 100, 15));
+        reqDanza.add(new Weapon("Espada Corta", 150, 20));
+        this.quests.add(new Quest("Danza de muerte", "Requiere tener en el inventario: Daga de las Sombras y Espada Corta", 150, reqDanza));
+
+       
+        List<Item> reqFenix = new ArrayList<Item>();
+        reqFenix.add(new Weapon("Espada del Alba", 200, 25));
+        reqFenix.add(new Helmet("Casco de Hierro", 80, 10));
+        reqFenix.add(new Armor("Coraza de Acero", 300, 30));
+        reqFenix.add(new Boots("Botas de Cuero", 50, 5));
+        this.quests.add(new Quest("Caballero del Fénix", "Requiere tener el set completo: Espada del Alba, Casco de Hierro, Coraza de Acero y Botas de Cuero", 300, reqFenix));
     }
 
     public void start() {
@@ -68,16 +91,59 @@ public class ShopController {
                 		validateGoldReward(actualGoldReward);
                 	}
                 	
+                	//prueba
                 	
                 	break;
                 case 4:
                 	System.out.println("");
-                    System.out.println("[!] Regresas de la incursion con exito.");
+                    System.out.println("[!] Regresas de la incursion con exito");
 
                    
                     repository.refreshStock();
-                    System.out.println("[INFO] El mercader ha renovado su stock con nuevos generos.");
+                    System.out.println("[INFO] El mercader ha renovado su stock con nuevos generos");
                     break;
+                case 5:
+                    System.out.println("");
+                    System.out.println("--- TABLON DE MISIONES ---");
+                    for (int i = 0; i < quests.size(); i++) {
+                        Quest q = quests.get(i);
+                        String status = q.isCompleted() ? "[COMPLETADA]" : "[DISPONIBLE]";
+                        System.out.println("[" + (i + 1) + "] " + q.getTitle() + " " + status + " - Premio: " + q.getGoldReward() + " oro");
+                        System.out.println("    Descripcion: " + q.getDescription());
+                    }
+                    System.out.println("--------------------------");
+                    System.out.print("Selecciona una mision para intentar: ");
+                    try {
+                        int choice = Integer.parseInt(sc.nextLine()) - 1;
+                        if (choice >= 0 && choice < quests.size()) {
+                            Quest selectedQuest = quests.get(choice);
+                            
+                            if (selectedQuest.isCompleted()) {
+                                System.out.println("[!] Esta mision ya la has completado y no puedes repetirla");
+                            } else
+                            {
+                                
+                                if (selectedQuest.checkRequirement(player)) {
+                                    System.out.println("");
+                                    System.out.println("[!] ¡Exito! Has completado la mision: " + selectedQuest.getTitle());
+                                    System.out.println("[!] Recompensa obtenida: " + selectedQuest.getGoldReward() + " monedas de oro");
+                                    
+                                    player.addGold(selectedQuest.getGoldReward());
+                                    selectedQuest.setCompleted(true);
+                                    repository.refreshStock(); 
+                                } else {
+                                    System.out.println("");
+                                    System.out.println("[!] No tienes los objetos exactos requeridos en tu inventario");
+                                }
+                            }
+                        } else {
+                            System.out.println("[!] ID de mision invalido");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("[!] Error: Introduce un numero valido");
+                    }
+                    break;
+                    
                 case 0:
                     view.quitMessage();
                     break;
