@@ -91,7 +91,7 @@ public class ShopController {
                 		validateGoldReward(actualGoldReward);
                 	}
                 	
-                	//prueba
+                	//prueba 2
                 	
                 	break;
                 case 4:
