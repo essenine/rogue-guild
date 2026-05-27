@@ -69,7 +69,9 @@ public class ShopController {
                     BuyResponse buyResponse = buyProcess(itemId);
                     view.buyResult(buyResponse);
                     break;
+                    //SELL PROCESS, ENSEÑAR BIEN INVENTARIO 
                 case 3:
+                	//case 7
                 	int actualGoldReward = 0;
                 	Incursion incursion = selectIncursion();
                 	if(incursion != null) {
