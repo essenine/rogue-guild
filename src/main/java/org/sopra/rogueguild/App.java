@@ -15,6 +15,7 @@ public class App {
         Player player = new Player( "Iñigo Montolla", 500);
        
         ShopController controller = new ShopController(player, view, repository);
-        controller.start();
+       controller.start();
+       
     }
 }

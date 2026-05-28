@@ -51,47 +51,63 @@ public class ShopController {
     }
 
     public void start() {
-        int opt;
+        int opt=-1;
         WorldEvent worldEvent = new WorldEvent(repository);
     	view.eventStatus(worldEvent);
     	goldRewardAcummulation=0;
+    	
         do {
             view.landingPage();
             view.playerStatus(player);
+           
+            try {
             opt = Integer.parseInt(sc.nextLine());
+            }catch(IllegalArgumentException e) {
+            	boolean isACorrectNumber = false;
+            	
+            	while(!isACorrectNumber) {
+            		try {
+            		System.out.println("Por favor, inserta un caracter permitido: un número del 0 al 7");
+            		opt = Integer.parseInt(sc.nextLine());
+            		if(opt>=0 && opt<=7) {
+            			isACorrectNumber=true;
+            		}}catch(IllegalArgumentException e1) {
+            			System.out.println("Cáracter no permitido.");
+            		}
+            		
+            	}
+            }
             switch (opt) {
                 case 1:
                     view.displayStock(repository.getAllStock(), false);
                     break;
                 case 2:
                     view.displayStock(repository.getAllStock(), true);
-                    int itemId = Integer.parseInt(sc.nextLine());
+                    int itemId= -1;
+                    try {
+                    	  itemId = Integer.parseInt(sc.nextLine());
+                        }catch(IllegalArgumentException e) {
+                        	boolean isACorrectNumber = false;
+                        	
+                        	while(!isACorrectNumber) {
+                        		try {
+                        		System.out.println("Por favor, inserta un caracter permitido");
+                        		itemId = Integer.parseInt(sc.nextLine());
+                        			isACorrectNumber=true;
+                        	}catch(IllegalArgumentException e1) {
+                        			System.out.println("Cáracter no permitido.");
+                        		}
+                        	}
+                        }
+                    
+                   
                     BuyResponse buyResponse = buyProcess(itemId);
                     view.buyResult(buyResponse);
                     break;
                     //SELL PROCESS, ENSEÑAR BIEN INVENTARIO 
                 case 3:
-                	//case 7
-                	int actualGoldReward = 0;
-                	Incursion incursion = selectIncursion();
-                	if(incursion != null) {
-                		if(incursion.getGoldReward() ==0) {
-                    		System.out.println("No has obtenido oro. Tu item de recompensa es "+incursion.getItemReward().getName());
-                    		player.addItem(incursion.getItemReward());
-                    	}
-                    	else if( incursion.getItemReward() ==null) {
-                    		System.out.println("No tienes item. Tu recompensa de oro es de "+incursion.getGoldReward()+ " oro.");
-                    		actualGoldReward = incursion.getGoldReward();
-                    		goldRewardAcummulation += incursion.getGoldReward();
-                    	}
-                    	else {
-                    	System.out.println("Has obtenido "+incursion.getGoldReward()+" de oro y el objeto "+ incursion.getItemReward().getName());
-                    	player.addItem(incursion.getItemReward());
-                    	actualGoldReward = incursion.getGoldReward();
-                    	goldRewardAcummulation += incursion.getGoldReward();
-                    	}
-                		validateGoldReward(actualGoldReward);
-                	}
+                	//case 7 ESTE TIENE QUE SER EL CASE 7, CAMBIAR ??
+                	//pQUEDA PENDEINTE CAMBIAR VISTA at. Sara
                 	
                 	//prueba 2
                 	//pruebafdfds
@@ -117,6 +133,7 @@ public class ShopController {
                     System.out.println("--------------------------");
                     System.out.print("Selecciona una mision para intentar: ");
                     try {
+                    	
                         int choice = Integer.parseInt(sc.nextLine()) - 1;
                         if (choice >= 0 && choice < quests.size()) {
                             Quest selectedQuest = quests.get(choice);
@@ -146,10 +163,35 @@ public class ShopController {
                         System.out.println("[!] Error: Introduce un numero valido");
                     }
                     break;
+                case 7:
+                	int actualGoldReward = 0;
+                	Incursion incursion = selectIncursion();
+                	if(incursion != null) {
+                		if(incursion.getGoldReward() ==0) {
+                    		System.out.println("No has obtenido oro. Tu item de recompensa es "+incursion.getItemReward().getName());
+                    		player.addItem(incursion.getItemReward());
+                    	}
+                    	else if( incursion.getItemReward() ==null) {
+                    		System.out.println("No tienes item. Tu recompensa de oro es de "+incursion.getGoldReward()+ " oro.");
+                    		actualGoldReward = incursion.getGoldReward();
+                    		goldRewardAcummulation += incursion.getGoldReward();
+                    	}
+                    	else {
+                    	System.out.println("Has obtenido "+incursion.getGoldReward()+" de oro y el objeto "+ incursion.getItemReward().getName());
+                    	player.addItem(incursion.getItemReward());
+                    	actualGoldReward = incursion.getGoldReward();
+                    	goldRewardAcummulation += incursion.getGoldReward();
+                    	}
+                		validateGoldReward(actualGoldReward);
+                	}
+                	break;
                     
                 case 0:
                     view.quitMessage();
                     break;
+                default:
+                	System.out.println("Opción no reconocida, elige otra opción.");
+                	break;
                 }
                 view.pressKeyMessage();
                 sc.nextLine();
