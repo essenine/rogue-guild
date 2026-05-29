@@ -52,6 +52,7 @@ public class ShopController {
 
     public void start() {
         int opt=-1;
+        String stringOpt ="";
         WorldEvent worldEvent = new WorldEvent(repository);
     	view.eventStatus(worldEvent);
     	goldRewardAcummulation=0;
@@ -60,23 +61,24 @@ public class ShopController {
             view.landingPage();
             view.playerStatus(player);
            
-            try {
-            opt = Integer.parseInt(sc.nextLine());
-            }catch(IllegalArgumentException e) {
+            stringOpt = sc.nextLine();
+            stringOpt.trim();
+            String acceptableOptions= "01234567";
+            if(!acceptableOptions.contains(stringOpt)) {
             	boolean isACorrectNumber = false;
-            	
             	while(!isACorrectNumber) {
-            		try {
             		System.out.println("Por favor, inserta un caracter permitido: un número del 0 al 7");
-            		opt = Integer.parseInt(sc.nextLine());
-            		if(opt>=0 && opt<=7) {
-            			isACorrectNumber=true;
-            		}}catch(IllegalArgumentException e1) {
-            			System.out.println("Cáracter no permitido.");
-            		}
-            		
+            		stringOpt = sc.nextLine();
+                    stringOpt.trim();
+                    if(acceptableOptions.contains(stringOpt)) {
+                    	isACorrectNumber= true;
+                    } else {
+                    	System.out.println("CÁRACTER NO PERMITIDO. VUELVE A INTENTARLO");
+                    }
             	}
             }
+            opt = Integer.parseInt(stringOpt);
+           
             switch (opt) {
                 case 1:
                     view.displayStock(repository.getAllStock(), false);
@@ -84,22 +86,19 @@ public class ShopController {
                 case 2:
                     view.displayStock(repository.getAllStock(), true);
                     int itemId= -1;
-                    try {
-                    	  itemId = Integer.parseInt(sc.nextLine());
-                        }catch(IllegalArgumentException e) {
-                        	boolean isACorrectNumber = false;
-                        	
-                        	while(!isACorrectNumber) {
-                        		try {
-                        		System.out.println("Por favor, inserta un caracter permitido");
-                        		itemId = Integer.parseInt(sc.nextLine());
-                        			isACorrectNumber=true;
-                        	}catch(IllegalArgumentException e1) {
-                        			System.out.println("Cáracter no permitido.");
-                        		}
-                        	}
-                        }
-                    
+                    String stringItem = sc.nextLine();
+                    boolean isANumber = false;
+                    String numbers= "0123456789";
+                    if(!stringItem.contains("0123456789")) {
+                    	while(!isANumber) {
+                    		System.out.println("INSERTA UN NÚMERO");
+                    		  stringItem = sc.nextLine();
+                    		 if(numbers.contains(stringItem)) {
+                    			 isANumber=true;
+                    		 }
+                    	}
+                    }
+                    itemId = Integer.parseInt(stringItem);
                    
                     BuyResponse buyResponse = buyProcess(itemId);
                     view.buyResult(buyResponse);
@@ -107,7 +106,7 @@ public class ShopController {
                     //SELL PROCESS, ENSEÑAR BIEN INVENTARIO 
                 case 3:
                 	//case 7 ESTE TIENE QUE SER EL CASE 7, CAMBIAR ??
-                	//pQUEDA PENDEINTE CAMBIAR VISTA at. Sara
+                	//puesot el
                 	
                 	//prueba 2
                 	//pruebafdfds
