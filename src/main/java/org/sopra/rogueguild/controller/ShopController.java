@@ -106,46 +106,152 @@ public class ShopController {
                     System.out.println("[INFO] El mercader ha renovado su stock con nuevos generos");
                     break;
                 case 5:
+               
                     System.out.println("");
-                    System.out.println("--- TABLON DE MISIONES ---");
+                    System.out.println("--- TABLON DE MISIONES DISPONIBLES ---");
+                    
+                  
+                    int disponibles = 0;
                     for (int i = 0; i < quests.size(); i++) {
-                        Quest q = quests.get(i);
-                        String status = q.isCompleted() ? "[COMPLETADA]" : "[DISPONIBLE]";
-                        System.out.println("[" + (i + 1) + "] " + q.getTitle() + " " + status + " - Premio: " + q.getGoldReward() + " oro");
-                        System.out.println("    Descripcion: " + q.getDescription());
-                    }
-                    System.out.println("--------------------------");
-                    System.out.print("Selecciona una mision para intentar: ");
-                    try {
-                        int choice = Integer.parseInt(sc.nextLine()) - 1;
-                        if (choice >= 0 && choice < quests.size()) {
-                            Quest selectedQuest = quests.get(choice);
-                            
-                            if (selectedQuest.isCompleted()) {
-                                System.out.println("[!] Esta mision ya la has completado y no puedes repetirla");
-                            } else
-                            {
-                                
-                                if (selectedQuest.checkRequirement(player)) {
-                                    System.out.println("");
-                                    System.out.println("[!] ¡Exito! Has completado la mision: " + selectedQuest.getTitle());
-                                    System.out.println("[!] Recompensa obtenida: " + selectedQuest.getGoldReward() + " monedas de oro");
-                                    
-                                    player.addGold(selectedQuest.getGoldReward());
-                                    selectedQuest.setCompleted(true);
-                                    repository.refreshStock(); 
-                                } else {
-                                    System.out.println("");
-                                    System.out.println("[!] No tienes los objetos exactos requeridos en tu inventario");
-                                }
-                            }
-                        } else {
-                            System.out.println("[!] ID de mision invalido");
+                        if (!quests.get(i).isCompleted()) {
+                            disponibles++;
                         }
-                    } catch (NumberFormatException e) {
-                        System.out.println("[!] Error: Introduce un numero valido");
+                    }
+
+                   
+                    if (disponibles == 0) {
+                        System.out.println("[INFO] No hay misiones disponibles. ¡Las has completado todas!");
+                    } else {
+                       
+                        for (int i = 0; i < quests.size(); i++) {
+                            Quest q = quests.get(i);
+                            if (!q.isCompleted()) {
+                                System.out.println("[" + (i + 1) + "] " + q.getTitle() + " - Premio: " + q.getGoldReward() + " oro");
+                                System.out.println("    Descripcion: " + q.getDescription());
+                            }
+                        }
+                        System.out.println("--------------------------------------");
+                        System.out.print("Selecciona el ID de la mision para reclamar: ");
+                        
+                        try {
+                     
+                            int choice = Integer.parseInt(sc.nextLine()) - 1;
+                            
+                            if (choice >= 0 && choice < quests.size()) {
+                                Quest selectedQuest = quests.get(choice);
+                                
+                           
+                                if (selectedQuest.isCompleted()) {
+                                    System.out.println("[!] Esa mision ya no esta disponible");
+                                } else {
+                                    
+                                    if (selectedQuest.checkRequirement(player)) {
+                                       
+                                        selectedQuest.setCompleted(true);
+                                  
+                                        player.addGold(selectedQuest.getGoldReward());
+                                        
+                               
+                                        System.out.println("");
+                                        System.out.println("[!] ¡MISION COMPLETADA CON EXITO!");
+                                        System.out.println("[!] Has reclamado: " + selectedQuest.getTitle());
+                                        System.out.println("[!] Oro obtenido: " + selectedQuest.getGoldReward() + " monedas de oro");
+                                        
+                                     
+                                        repository.refreshStock();
+                                    } else {
+                                       
+                                        System.out.println("");
+                                        System.out.println("[X] No cumples los requisitos. Te falta tener en el inventario:");
+                                        
+                                        List<Item> requeridos = selectedQuest.getRequiredItems();
+                                        List<Item> inventario = player.getInventory();
+                                        
+                                      
+                                        for (int i = 0; i < requeridos.size(); i++) {
+                                            Item req = requeridos.get(i);
+                                            if (!inventario.contains(req)) {
+                                                System.out.println("    - " + req.getName());
+                                            }
+                                        }
+                                    }
+                                }
+                            } else {
+                                System.out.println("[!] ID de mision invalido.");
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("[!] Error: Introduce un numero valido.");
+                        }
                     }
                     break;
+                    
+                case 6:
+                   // Venta de objetos
+                    List<Item> inventarioVenta = player.getInventory();
+
+                 
+                    if (inventarioVenta.isEmpty()) {
+                        System.out.println("");
+                        System.out.println("[INFO] Tu inventario esta vacio. No tienes objetos para vender.");
+                    } else {
+                        System.out.println("");
+                        System.out.println("--- TU INVENTARIO (VENTA) ---");
+                    
+                        for (int i = 0; i < inventarioVenta.size(); i++) {
+                            Item item = inventarioVenta.get(i);
+                            System.out.println("[" + (i + 1) + "] " + item.getName() + " - Cat: " + item.getCategory() + " - Valor Base: " + item.getBasePrice() + " oro");
+                        }
+                        System.out.println("-----------------------------");
+                        System.out.print("Selecciona el ID del item que quieres vender: ");
+
+                        try {
+                            int choiceVenta = Integer.parseInt(sc.nextLine()) - 1;
+
+                    
+                            if (choiceVenta >= 0 && choiceVenta < inventarioVenta.size()) {
+                                Item itemAVender = inventarioVenta.get(choiceVenta);
+                                
+                       
+                                sellProcess(itemAVender);
+                            } else {
+                                System.out.println("[!] ID de objeto invalido. Operacion cancelada");
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("[!] Error: Introduce un numero valido");
+                        }
+                    }
+                    break;
+                    
+                case 7:
+                	//menu de equipamiento
+                		List<Item> mochilaEquipar = player.getInventory();
+                    
+                    if (mochilaEquipar.isEmpty()) {
+                        System.out.println("");
+                        System.out.println("[INFO] Tu inventario está vacío. No tienes objetos para equipar");
+                    } else {
+                        System.out.println("");
+                        System.out.println("--- MENU DE EQUIPAMIENTO ---");
+                        for (int i = 0; i < mochilaEquipar.size(); i++) {
+                            Item item = mochilaEquipar.get(i);
+                            System.out.println("[" + (i + 1) + "] " + item.getName() + " (" + item.getCategory() + ")");
+                        }
+                        System.out.println("----------------------------");
+                        System.out.print("Selecciona el ID del objeto que quieres equipar: ");
+                        
+                        try {
+                            int choiceEquip = Integer.parseInt(sc.nextLine()) - 1;
+                            if (choiceEquip >= 0 && choiceEquip < mochilaEquipar.size()) {
+                                Item itemAEquipar = mochilaEquipar.get(choiceEquip);
+                                equipProcess(itemAEquipar);
+                            } else {
+                                System.out.println("[!] ID de objeto invalido");
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("[!] Error: Introduce un numero valido");
+                        }
+                    }
+                	break;
                     
                 case 0:
                     view.quitMessage();
@@ -164,10 +270,10 @@ public class ShopController {
 			player.addGold(actualGoldReward);
 			System.out.println("Se ha añadido "+ actualGoldReward+" oro a tu inventario");
 		} else {
-		System.out.println("No se puede sobrepasar de 500 monedas de oro. ");
+		System.out.println("No se puede sobrepasar de 500 monedas de oro ");
 		int goldDifference = 500- (goldRewardAcummulation -actualGoldReward);
 		if( goldDifference >0 ) {
-		System.out.println("Tu recompensa en oro pasa de "+actualGoldReward+" a"+ goldDifference+" oro.");
+		System.out.println("Tu recompensa en oro pasa de "+actualGoldReward+" a"+ goldDifference+" oro");
 		player.addGold(goldDifference);
 		System.out.println("Se ha añadido "+ goldDifference+" oro a tu inventario");
 		} else {
@@ -324,10 +430,10 @@ public class ShopController {
     
     private BuyResponse buyProcess(int id) {
         Item item = repository.getItem(id);
-        if (item == null) {
+        if (item ==null) {
             return BuyResponse.notFound(id);
         }
-        if (player.getGold() < item.getBasePrice()) {
+        if (player.getGold() <item.getBasePrice()) {
             return BuyResponse.notEnoughGold(item, player.getGold());
         }
         player.buy(item);
@@ -335,9 +441,99 @@ public class ShopController {
         return BuyResponse.success(item);
     }
 
-    private void sellProcess(Item item) {
-        //TODO Sell process
+    private void sellProcess(Item item)
+    {
+      
+        double precioCalculado = item.getBasePrice() *0.8;
+        int precioVentaFinal = (int) (Math.round(precioCalculado/5.0) *5);
+
+        player.removeItem(item);
+
+        player.addGold(precioVentaFinal);
+
+       
+        int nuevoIdStock = 1;
+        while (repository.getAllStock().containsKey(nuevoIdStock)) {
+            nuevoIdStock++;
+        }
+        repository.getAllStock().put(nuevoIdStock,item);
+      
+        System.out.println("");
+        System.out.println("Has vendido " + item.getName() + " por " + precioVentaFinal + " monedas");
     }
     
+    private void equipProcess(Item item) {
+        ItemCategory cat = item.getCategory();
+
+        if (cat == ItemCategory.WEAPON) {
+            List<Item> armasEquipadas = player.getEquippedWeapons();
+
+            // regla WEAPON: maximo 2 ranuras
+            if (armasEquipadas.size() < 2) {
+                player.removeItem(item);
+                armasEquipadas.add(item); 
+                System.out.println("[!] Has equipado el arma: " + item.getName());
+            } else {
+                // reemplazar el arma con el damage mas bajo. empate = primera.
+                Item arma1 = armasEquipadas.get(0);
+                Item arma2 = armasEquipadas.get(1);
+
+                int dmg1 = ((Weapon) arma1).getDamage();
+                int dmg2 = ((Weapon) arma2).getDamage();
+
+                Item armaReemplazo;
+                int indiceReemplazo;
+
+                if (dmg1 < dmg2) {
+                    armaReemplazo = arma1;
+                    indiceReemplazo = 0;
+                } else if (dmg2 < dmg1) {
+                    armaReemplazo = arma2;
+                    indiceReemplazo = 1;
+                } else {
+                    // en caso de empate, se reemplaza la primera
+                    armaReemplazo = arma1;
+                    indiceReemplazo = 0;
+                }
+
+                armasEquipadas.remove(indiceReemplazo);
+                player.addItem(armaReemplazo);
+
+              
+                player.removeItem(item);
+                armasEquipadas.add(item);
+
+                System.out.println("[!] Ranuras llenas. Desequipado '" + armaReemplazo.getName() + "' (Daño: " + ((Weapon) armaReemplazo).getDamage() + ") para equipar '" + item.getName() + "' (Daño: " + ((Weapon) item).getDamage() + ").");
+            }
+        } else {
+            // resto de categorias (ARMOR HELMET BOOTS) maximo 1 ranura
+            Item equipadoActual = null;
+
+            if (cat == ItemCategory.ARMOR) 
+            {
+                equipadoActual = player.getEquippedArmor();
+                if (equipadoActual != null) player.addItem(equipadoActual); 
+                player.removeItem(item); 
+                player.setEquippedArmor(item);
+            } else if (cat == ItemCategory.HELMET)
+            {
+                equipadoActual = player.getEquippedHelmet();
+                if (equipadoActual != null) player.addItem(equipadoActual);
+                player.removeItem(item);
+                player.setEquippedHelmet(item);
+            } else if (cat == ItemCategory.BOOTS)
+            {
+                equipadoActual = player.getEquippedBoots();
+                if (equipadoActual != null) player.addItem(equipadoActual);
+                player.removeItem(item);
+                player.setEquippedBoots(item);
+            }
+
+            if (equipadoActual != null) {
+                System.out.println("[INFO] Se ha reemplazado '" + equipadoActual.getName() + "' y ha vuelto a tu inventario");
+            }
+            System.out.println("[!] Has equipado con exito: " + item.getName());
+        }
+    }
    
 }
