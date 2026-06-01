@@ -165,11 +165,11 @@ public class ItemGenerator {
 		int randomPrefix = ((int) (Math.random() *5 ) +1)-1;
 		int randomSuffix = ((int) (Math.random() *5 ) +1)-1;
 		String[] prefixes = new String[5];
-		prefixes[0] = "Cuadro";
-		prefixes[1] = "Colonia";
-		prefixes[2] = "Pluma";
-		prefixes[3] = "Botella";
-		prefixes[4] = "Reloj";
+		prefixes[0] = "Oro ";
+		prefixes[1] = "Colonia ";
+		prefixes[2] = "Hierro ";
+		prefixes[3] = "Gema ";
+		prefixes[4] = "Reloj ";
 		String[] suffixes = new String[5];
 		suffixes[0] = "de Alaska";
 		suffixes[1] = "del futuro ";

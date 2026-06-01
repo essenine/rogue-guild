@@ -64,13 +64,13 @@ public class ShopController {
             stringOpt = sc.nextLine();
             stringOpt.trim();
             String acceptableOptions= "01234567";
-            if(!acceptableOptions.contains(stringOpt)) {
+            if(!acceptableOptions.contains(stringOpt) || stringOpt.isEmpty()) {
             	boolean isACorrectNumber = false;
             	while(!isACorrectNumber) {
             		System.out.println("Por favor, inserta un caracter permitido: un número del 0 al 7");
             		stringOpt = sc.nextLine();
                     stringOpt.trim();
-                    if(acceptableOptions.contains(stringOpt)) {
+                    if(acceptableOptions.contains(stringOpt) && !stringOpt.isEmpty()) {
                     	isACorrectNumber= true;
                     } else {
                     	System.out.println("CÁRACTER NO PERMITIDO. VUELVE A INTENTARLO");
@@ -93,7 +93,7 @@ public class ShopController {
                     	while(!isANumber) {
                     		System.out.println("INSERTA UN NÚMERO");
                     		  stringItem = sc.nextLine();
-                    		 if(numbers.contains(stringItem)) {
+                    		 if(numbers.contains(stringItem) && !stringItem.isBlank()) {
                     			 isANumber=true;
                     		 }
                     	}
@@ -358,7 +358,6 @@ public class ShopController {
     	}
     	return item;
     }
-    
     
     
     
