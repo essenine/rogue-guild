@@ -55,13 +55,14 @@ public class ShopController {
         WorldEvent worldEvent = new WorldEvent(repository);
         view.eventStatus(worldEvent);
         goldRewardAcummulation = 0;
-    	
+        
         do {
             view.landingPage();
             view.playerStatus(player);
            
             stringOpt = sc.nextLine();
             stringOpt = stringOpt.trim();
+            
             String acceptableOptions = "01234567";
             if (!acceptableOptions.contains(stringOpt) || stringOpt.isEmpty()) {
                 boolean isACorrectNumber = false;
@@ -86,6 +87,7 @@ public class ShopController {
                     view.displayStock(repository.getAllStock(), true);
                     String stringItem = sc.nextLine();
                     boolean isANumber = false;
+
                     String numbers = "0123456789";
                     if (!numbers.contains(stringItem) || stringItem.isEmpty()) {
                         while (!isANumber) {
@@ -103,7 +105,6 @@ public class ShopController {
                     break;
 
                 case 3:
-                   
                     int actualGoldReward = 0;
                     Incursion incursion = selectIncursion();
                     if (incursion != null) {
@@ -132,7 +133,6 @@ public class ShopController {
                     break;
 
                 case 5:
-                
                     System.out.println("");
                     System.out.println("--- TABLON DE MISIONES DISPONIBLES ---");
                     
@@ -181,7 +181,6 @@ public class ShopController {
                                         
                                         List<Item> requeridos = selectedQuest.getRequiredItems();
                                         
-                                        // si la misión tiene objetos (lista no vacia), muestra que le falta
                                         if (requeridos != null && !requeridos.isEmpty()) {
                                             System.out.println("Te falta tener en el inventario:");
                                             List<Item> inventario = player.getInventory();
@@ -192,11 +191,10 @@ public class ShopController {
                                                 }
                                             }
                                         } else {
-                                            // si no pide objetos, es que es una misión del hu 15
                                             System.out.println("Asegurate de tener suficiente Ataque o Armadura activa en tu menu de equipamiento.");
                                         }
                                     }
-                                    }
+                                }
                                 
                             } else {
                                 System.out.println("[!] ID de mision invalido.");
@@ -208,7 +206,6 @@ public class ShopController {
                     break;
                     
                 case 6:
-                    // venta de objetos
                     List<Item> inventarioVenta = player.getInventory();
 
                     if (inventarioVenta.isEmpty()) {
@@ -241,7 +238,6 @@ public class ShopController {
                     break;
                     
                 case 7:
-                    //  menu de equipamiento 
                     List<Item> mochilaEquipar = player.getInventory();
                     
                     if (mochilaEquipar.isEmpty()) {
@@ -284,7 +280,7 @@ public class ShopController {
     }
 
     private void validateGoldReward(int actualGoldReward) {
-        if (goldRewardAcummulation <= 500) {	
+        if (goldRewardAcummulation <= 500) {    
             player.addGold(actualGoldReward);
             System.out.println("Se ha añadido " + actualGoldReward + " oro a tu inventario");
         } else {
@@ -306,7 +302,7 @@ public class ShopController {
         Incursion incursion = null;
         try {
             int opt = Integer.parseInt(sc.nextLine());
-    	
+            
             switch(opt) {
                 case 1:
                     incursion = generateCoquerIncursion();
@@ -340,7 +336,7 @@ public class ShopController {
     private Item generateMinorItem() {
         Item item = null;
         ItemGenerator generator = new ItemGenerator();
-    	
+        
         boolean isLowValue = false;
         while (!isLowValue) {
             item = generator.generate(repository);
