@@ -12,4 +12,10 @@ public class Armor extends Item {
   public int getShield() {
       return this.shield;
   }
+
+@Override
+public String toString() {
+	return super.toString()+" [ protección : "+shield+ " ]";
+}
+  
 }

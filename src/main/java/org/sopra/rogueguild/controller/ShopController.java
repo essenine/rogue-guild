@@ -105,24 +105,38 @@ public class ShopController {
                     break;
 
                 case 3:
-                    int actualGoldReward = 0;
-                    Incursion incursion = selectIncursion();
-                    if (incursion != null) {
-                        if (incursion.getGoldReward() == 0) {
-                            System.out.println("No has obtenido oro. Tu item de recompensa es " + incursion.getItemReward().getName());
-                            player.addItem(incursion.getItemReward());
-                        } else if (incursion.getItemReward() == null) {
-                            System.out.println("No tienes item. Tu recompensa de oro es de " + incursion.getGoldReward() + " oro.");
-                            actualGoldReward = incursion.getGoldReward();
-                            goldRewardAcummulation += incursion.getGoldReward();
-                        } else {
-                            System.out.println("Has obtenido " + incursion.getGoldReward() + " de oro y el objeto " + incursion.getItemReward().getName());
-                            player.addItem(incursion.getItemReward());
-                            actualGoldReward = incursion.getGoldReward();
-                            goldRewardAcummulation += incursion.getGoldReward();
-                        }
-                        validateGoldReward(actualGoldReward);
-                    }
+                	 List<Item> inventarioVenta = player.getInventory();
+
+                     if (inventarioVenta.isEmpty()) {
+                         System.out.println("");
+                         System.out.println("[INFO] Tu inventario esta vacio. No tienes objetos para vender.");
+                     } else {
+                         System.out.println("");
+                         System.out.println("--- TU INVENTARIO (VENTA) ---");
+                     
+                         for (int i = 0; i < inventarioVenta.size(); i++) {
+                             Item item = inventarioVenta.get(i);
+                             System.out.println("[" + (i + 1) + "] " + item.getName() + " - Cat: " + item.getCategory() + " - Valor Base: " + item.getBasePrice() + " oro");
+                         }
+                         System.out.println("-----------------------------");
+                         System.out.print("Selecciona el ID del item que quieres vender: ");
+
+                         try {
+                             int choiceVenta = Integer.parseInt(sc.nextLine()) - 1;
+
+                             if (choiceVenta >= 0 && choiceVenta < inventarioVenta.size()) {
+                                 Item itemAVender = inventarioVenta.get(choiceVenta);
+                                 sellProcess(itemAVender);
+                             } else {
+                                 System.out.println("[!] ID de objeto invalido. Operacion cancelada.");
+                             }
+                         } catch (NumberFormatException e) {
+                             System.out.println("[!] Error: Introduce un numero valido.");
+                         }
+                     }
+                	
+                	///
+                  
                     break;
 
                 case 4:
@@ -206,35 +220,24 @@ public class ShopController {
                     break;
                     
                 case 6:
-                    List<Item> inventarioVenta = player.getInventory();
-
-                    if (inventarioVenta.isEmpty()) {
-                        System.out.println("");
-                        System.out.println("[INFO] Tu inventario esta vacio. No tienes objetos para vender.");
-                    } else {
-                        System.out.println("");
-                        System.out.println("--- TU INVENTARIO (VENTA) ---");
-                    
-                        for (int i = 0; i < inventarioVenta.size(); i++) {
-                            Item item = inventarioVenta.get(i);
-                            System.out.println("[" + (i + 1) + "] " + item.getName() + " - Cat: " + item.getCategory() + " - Valor Base: " + item.getBasePrice() + " oro");
-                        }
-                        System.out.println("-----------------------------");
-                        System.out.print("Selecciona el ID del item que quieres vender: ");
-
-                        try {
-                            int choiceVenta = Integer.parseInt(sc.nextLine()) - 1;
-
-                            if (choiceVenta >= 0 && choiceVenta < inventarioVenta.size()) {
-                                Item itemAVender = inventarioVenta.get(choiceVenta);
-                                sellProcess(itemAVender);
-                            } else {
-                                System.out.println("[!] ID de objeto invalido. Operacion cancelada.");
-                            }
-                        } catch (NumberFormatException e) {
-                            System.out.println("[!] Error: Introduce un numero valido.");
-                        }
-                    }
+                	  int actualGoldReward = 0;
+                      Incursion incursion = selectIncursion();
+                      if (incursion != null) {
+                          if (incursion.getGoldReward() == 0) {
+                              System.out.println("No has obtenido oro. Tu item de recompensa es " + incursion.getItemReward().toString());
+                              player.addItem(incursion.getItemReward());
+                          } else if (incursion.getItemReward() == null) {
+                              System.out.println("No tienes item. Tu recompensa de oro es de " + incursion.getGoldReward() + " oro.");
+                              actualGoldReward = incursion.getGoldReward();
+                              goldRewardAcummulation += incursion.getGoldReward();
+                          } else {
+                              System.out.println("Has obtenido " + incursion.getGoldReward() + " de oro y el objeto " + incursion.getItemReward().toString());
+                              player.addItem(incursion.getItemReward());
+                              actualGoldReward = incursion.getGoldReward();
+                              goldRewardAcummulation += incursion.getGoldReward();
+                          }
+                          validateGoldReward(actualGoldReward);
+                      }
                     break;
                     
                 case 7:

@@ -7,4 +7,8 @@ public class Potion extends Item{
 	    super(name, price, ItemCategory.ARMOR);
 	    this.damage = damage;
 	  }
+	  @Override
+	  public String toString() {
+	  	return super.toString()+" [ daño : "+damage+ " ]";
+	  }
 }

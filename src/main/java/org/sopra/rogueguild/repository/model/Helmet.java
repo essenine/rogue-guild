@@ -10,4 +10,9 @@ public class Helmet extends Item{
 	public int getProtection() {
         return this.protection;
     }
+	
+	@Override
+	public String toString() {
+		return super.toString()+" [ protección : "+protection+ " ]";
+	}
 }

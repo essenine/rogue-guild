@@ -24,5 +24,5 @@ public abstract class Item {
     public int getBasePrice() {
     	return BASE_PRICE;
     }
-    public String toString() { return name + " (" + BASE_PRICE + " oro)"; }
+    public String toString() { return name + " ("+category+")"+" ( " + BASE_PRICE + " oro )"; }
 }
