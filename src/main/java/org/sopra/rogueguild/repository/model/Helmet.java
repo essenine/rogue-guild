@@ -7,4 +7,7 @@ public class Helmet extends Item{
 		    this.protection = protection;
 	}
 
+	public int getProtection() {
+        return this.protection;
+    }
 }

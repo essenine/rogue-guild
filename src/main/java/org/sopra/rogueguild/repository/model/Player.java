@@ -56,4 +56,37 @@ public class Player {
     public void setEquippedArmor(Item armor) { this.equippedArmor = armor; }
     public void setEquippedHelmet(Item helmet) { this.equippedHelmet = helmet; }
     public void setEquippedBoots(Item boots) { this.equippedBoots = boots; }
+    
+    
+    public int getTotalEquippedDamage() {
+        int totalDamage = 0;
+        for (Item item : this.equippedWeapons) {
+            if (item instanceof Weapon) {
+                totalDamage += ((Weapon) item).getDamage();
+            }
+        }
+        return totalDamage;
+    }
+
+   
+    public int getTotalEquippedDefense() {
+        int totalDefense = 0;
+        
+        
+        if (this.equippedArmor != null && this.equippedArmor instanceof Armor) {
+            totalDefense += ((Armor) this.equippedArmor).getShield();
+        }
+        
+     
+        if (this.equippedHelmet != null && this.equippedHelmet instanceof Helmet) {
+            totalDefense += ((Helmet) this.equippedHelmet).getProtection();
+        }
+        
+     
+        if (this.equippedBoots != null && this.equippedBoots instanceof Boots) {
+            totalDefense += ((Boots) this.equippedBoots).getQuality();
+        }
+        
+        return totalDefense;
+    }
 }

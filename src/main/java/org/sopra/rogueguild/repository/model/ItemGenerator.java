@@ -138,6 +138,9 @@ public class ItemGenerator {
 			generatedPrice = (((int)(Math.random() * 31) + 10) / 5) * 5;
 		break;
 			}
+		case "OTHERS":{
+			generatedPrice = (((int)(Math.random() * 51) + 250) / 5) * 5;
+		}
 		default:
 			generatedPrice=0;
 		}
@@ -156,13 +159,47 @@ public class ItemGenerator {
 		}
 		return itemExists;
 	}
+	
+	private Others generateOthersItem(ShopRepository repository) {
+		Others others = null;
+		int randomPrefix = ((int) (Math.random() *5 ) +1)-1;
+		int randomSuffix = ((int) (Math.random() *5 ) +1)-1;
+		String[] prefixes = new String[5];
+		prefixes[0] = "Cuadro";
+		prefixes[1] = "Colonia";
+		prefixes[2] = "Pluma";
+		prefixes[3] = "Botella";
+		prefixes[4] = "Reloj";
+		String[] suffixes = new String[5];
+		suffixes[0] = "de Alaska";
+		suffixes[1] = "del futuro ";
+		suffixes[2] = "del Antiguo Egipto";
+		suffixes[3] = "de flores silvestres";
+		suffixes[4] = "que contiene secretos";
+		
+		String name = prefixes[randomPrefix]+suffixes[randomSuffix];
+		if(!itemExists(repository, name)) {
+		int price = generatePrice("OTHERS");
+		others = new Others(name, price);
+		}else {
+			others = generateOthersItem(repository);
+		}
+		return others;
+		
+	}
 
 	public Item generate(ShopRepository repository) {
-		
+		Item item = null; 
 		int randomNumberPrefixType = ((int) (Math.random() * 5) +1)-1;
 		int randomNumberSuffixType = ((int) (Math.random() *4 ) +1)-1;
 		int random0to4 = ((int) (Math.random() *5 ) +1)-1;
+		int fivePercentProbability = (int)(Math.random() * 100) + 1;
 		
+		if (fivePercentProbability <= 5) {
+		 item = generateOthersItem(repository);	
+		
+		}
+		else {
 		String prefixType = prefixesTypes[randomNumberPrefixType];
 		String suffixType = suffixesTypes[randomNumberSuffixType];
 		
@@ -177,7 +214,7 @@ public class ItemGenerator {
 		int price = generatePrice(prefixType);
 		ItemCategory category = ItemCategory.valueOf(prefixType);
 		int extraAttributeRandom = ((int) (Math.random() * 100 ) +1);
-		Item item = null; 
+		
 		if(!itemExists(repository, generatedName)) {
 		switch (category) {
 		case WEAPON: {
@@ -204,11 +241,13 @@ public class ItemGenerator {
 			System.out.println("Item couldn't be generated.");
 			break;
 		}
-		} else {
+		} 
+		else {
 			item = generate(repository);
 		}
+		}
 		return item;
-		//VERIFICAR SISTEMA DE INCURSIONES????
 	}
 	
 }
+

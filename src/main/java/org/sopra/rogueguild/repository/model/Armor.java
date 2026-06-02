@@ -8,4 +8,8 @@ public class Armor extends Item {
     super(name, price, ItemCategory.ARMOR);
     this.shield = shield;
   }
+  
+  public int getShield() {
+      return this.shield;
+  }
 }

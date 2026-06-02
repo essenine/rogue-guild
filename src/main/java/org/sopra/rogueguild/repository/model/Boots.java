@@ -6,4 +6,8 @@ public class Boots extends Item {
 		 super(name, price, ItemCategory.BOOTS);
 		    this.quality = quality;
 	}
+	
+	public int getQuality() {
+        return this.quality;
+    }
 }
