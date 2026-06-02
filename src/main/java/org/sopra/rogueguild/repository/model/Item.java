@@ -25,4 +25,24 @@ public abstract class Item {
     	return BASE_PRICE;
     }
     public String toString() { return name + " ("+category+")"+" ( " + BASE_PRICE + " oro )"; }
+
+	@Override
+	public boolean equals(Object obj) {
+		boolean isEqual = false;
+		if(obj.getClass() != this.getClass()) {
+			isEqual=false;
+		} else {
+			Item o = (Item)obj;
+			if(o.getName().equals(this.getName())) {
+				isEqual=true;
+			} else {
+				isEqual=false;
+			}
+		}
+		
+		
+		return isEqual;
+	}
+    
+    
 }

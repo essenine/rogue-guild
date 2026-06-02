@@ -141,7 +141,6 @@ public class ShopController {
 
                 case 4:
                     System.out.println("");
-                    System.out.println("[!] Regresas de la incursion con exito");
                     repository.refreshStock();
                     System.out.println("[INFO] El mercader ha renovado su stock con nuevos generos");
                     break;
@@ -205,7 +204,7 @@ public class ShopController {
                                                 }
                                             }
                                         } else {
-                                            System.out.println("Asegurate de tener suficiente Ataque o Armadura activa en tu menu de equipamiento.");
+                                            System.out.println("Asegurate de tener suficiente Ataque o Armadura --activa-- en tu menu de equipamiento.");
                                         }
                                     }
                                 }
@@ -277,8 +276,9 @@ public class ShopController {
                     System.out.println("Opción no reconocida, elige otra opción.");
                     break;
             }
-            view.pressKeyMessage();
-            sc.nextLine();
+            if(opt !=0) {
+           view.pressKeyMessage();
+           sc.nextLine();}
         } while (opt != 0);
     }
 
