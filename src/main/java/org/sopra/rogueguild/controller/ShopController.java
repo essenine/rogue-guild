@@ -325,7 +325,7 @@ public class ShopController {
     }
 
     private void validateGoldReward(int actualGoldReward) {
-        int LIMITE_MAXIMO = 1000;
+        int LIMITE_MAXIMO = 500;
         int oroActual = player.getGold();
 
       
@@ -338,9 +338,9 @@ public class ShopController {
             
             if (espacioRestante > 0) {
                 player.addGold(espacioRestante);
-                System.out.println("Has alcanzado el límite de 1000. Solo se han añadido " + espacioRestante + " monedas.");
+                System.out.println("Has alcanzado el límite de 500. Solo se han añadido " + espacioRestante + " monedas.");
             } else {
-                System.out.println("Ya tienes el máximo (1000 monedas). No se puede añadir más oro.");
+                System.out.println("Ya tienes el máximo (500 monedas). No se puede añadir más oro.");
             }
         }
     }
