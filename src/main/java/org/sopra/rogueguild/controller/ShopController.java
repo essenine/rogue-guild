@@ -253,15 +253,37 @@ public class ShopController {
                     break;
                     
                 case 7:
+         
+                    int ataqueTotal = 0;
+                    for (Item w : player.getEquippedWeapons()) {
+                        if (w instanceof Weapon) {
+                            ataqueTotal += ((Weapon) w).getDamage();
+                        }
+                    }
+
+                    int armaduraTotal = 0;
+                   
+                    if (player.getEquippedArmor() instanceof Armor) {
+                        armaduraTotal += ((Armor) player.getEquippedArmor()).getShield();
+                    }
+             
+                
+
+                    System.out.println("\n--- TUS ESTADÍSTICAS ACTUALES ---");
+                    System.out.println("Ataque Total: " + ataqueTotal);
+                    System.out.println("Armadura Total: " + armaduraTotal);
+                    System.out.println("---------------------------------");
+
+                    // 2. Lógica del menú de equipamiento
                     List<Item> mochilaEquipar = player.getInventory();
-                    
+
                     if (mochilaEquipar.isEmpty()) {
                         System.out.println("");
                         System.out.println("[INFO] Tu inventario está vacío. No tienes objetos para equipar.");
                     } else {
                         System.out.println("");
                         System.out.println("--- MENU DE EQUIPAMIENTO ---");
-                       
+
                         for (int i = 0; i < mochilaEquipar.size(); i++) {
                             Item item = mochilaEquipar.get(i);
                             System.out.println("[" + (i + 1) + "] " + item.getName() + " (" + item.getCategory() + ")");
@@ -269,21 +291,22 @@ public class ShopController {
                         System.out.println("[0] Salir");
                         System.out.println("----------------------------");
                         System.out.print("Selecciona el ID del objeto que quieres equipar: ");
-                        
+
                         try {
-                        	  int choiceEquip = Integer.parseInt(sc.nextLine());
-                        	  if(choiceEquip == 0) {
-                        		  System.out.println("Saliendo...");
-                        	  }else {
-                             choiceEquip = choiceEquip - 1;
-                            if (choiceEquip >= 0 && choiceEquip < mochilaEquipar.size()) {
-                                Item itemAEquipar = mochilaEquipar.get(choiceEquip);
-                                equipProcess(itemAEquipar);
+                            int choiceEquip = Integer.parseInt(sc.nextLine());
+                            if (choiceEquip == 0) {
+                                System.out.println("Saliendo...");
                             } else {
-                                System.out.println("[!] ID de objeto invalido.");
-                            }}
+                                choiceEquip = choiceEquip - 1;
+                                if (choiceEquip >= 0 && choiceEquip < mochilaEquipar.size()) {
+                                    Item itemAEquipar = mochilaEquipar.get(choiceEquip);
+                                    equipProcess(itemAEquipar);
+                                } else {
+                                    System.out.println("[!] ID de objeto inválido.");
+                                }
+                            }
                         } catch (NumberFormatException e) {
-                            System.out.println("[!] Error: Introduce un numero valido.");
+                            System.out.println("[!] Error: Introduce un número válido.");
                         }
                     }
                     break;
@@ -302,23 +325,25 @@ public class ShopController {
     }
 
     private void validateGoldReward(int actualGoldReward) {
-        if (goldRewardAcummulation <= 500) {    
+        int LIMITE_MAXIMO = 1000;
+        int oroActual = player.getGold();
+
+      
+        if (oroActual + actualGoldReward <= LIMITE_MAXIMO) {
             player.addGold(actualGoldReward);
-            System.out.println("Se ha añadido " + actualGoldReward + " oro a tu inventario");
+            System.out.println("Se ha añadido " + actualGoldReward + " monedas a tu inventario.");
         } else {
-            System.out.println("No se puede sobrepasar de 500 monedas de oro ");
-            int goldDifference = 500 - (goldRewardAcummulation - actualGoldReward);
-            if (goldDifference > 0) {
-                System.out.println("Tu recompensa en oro pasa de " + actualGoldReward + " a " + goldDifference + " oro");
-                player.addGold(goldDifference);
-                System.out.println("Se ha añadido " + goldDifference + " oro a tu inventario");
+          
+            int espacioRestante = LIMITE_MAXIMO - oroActual;
+            
+            if (espacioRestante > 0) {
+                player.addGold(espacioRestante);
+                System.out.println("Has alcanzado el límite de 1000. Solo se han añadido " + espacioRestante + " monedas.");
             } else {
-                System.out.println("No se añade ningún oro a tu inventario");
+                System.out.println("Ya tienes el máximo (1000 monedas). No se puede añadir más oro.");
             }
-            goldRewardAcummulation = 501;
         }
     }
-
     private Incursion selectIncursion() {
         view.showIncursion();
         Incursion incursion = null;
@@ -459,6 +484,21 @@ public class ShopController {
     }
 
     private void sellProcess(Item item) {
+
+        if (player.getEquippedWeapons().contains(item)) {
+            player.getEquippedWeapons().remove(item);
+        } 
+    
+        else if (player.getEquippedArmor() == item) {
+            player.setEquippedArmor(null);
+        } 
+        else if (player.getEquippedHelmet() == item) {
+            player.setEquippedHelmet(null);
+        } 
+        else if (player.getEquippedBoots() == item) {
+            player.setEquippedBoots(null);
+        }
+
         double precioCalculado = item.getBasePrice() * 0.8;
         int precioVentaFinal = (int) (Math.round(precioCalculado / 5.0) * 5);
 

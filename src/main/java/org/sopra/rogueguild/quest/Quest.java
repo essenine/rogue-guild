@@ -41,7 +41,7 @@ public class Quest {
 	
 	public boolean checkRequirement(Player p) {
 		if (this.isEquipmentQuest) {
-			return p.getTotalEquippedDamage()>=this.requiredDamage &&  p.getTotalEquippedDefense()> this.requiredDefense;
+			return p.getTotalEquippedDamage()>=this.requiredDamage &&  p.getTotalEquippedDefense()>= this.requiredDefense;
 		}
 		boolean checksRequirement = false;
 		List<Item> inventory = p.getInventory();
