@@ -31,8 +31,9 @@ public class StockView {
                                 "-", item.getName(), item.getPrice());
                     }
                 });
+        			
 
-        out.println("|| |                                               | ||");
+        out.println("|| |                                                 | ||");
         out.println("|| \\_______________________________________________/ ||");
         out.println(" \\___________________________________________________/");
     }

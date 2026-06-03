@@ -13,12 +13,9 @@ public class Quest {
 	private boolean isCompleted = false;
 	private String title;
 	
-	// nuevos atributos para la validacion de estadisticas 
 	private int requiredDamage = 0;
 	private int requiredDefense = 0;
-	private boolean isEquipmentQuest = false; // diferencia entre un tipo de mision u otro, si es true son el tipo de mision que requiere un daño o una defensa (hu 15). si es false, es una mision simple
-	
-
+	private boolean isEquipmentQuest = false; 
 	public Quest(String title, String description, int goldReward, List<Item> requiredItems) {
 		super();
 		this.title = title;
@@ -30,8 +27,6 @@ public class Quest {
 		}
 		this.requiredItems = requiredItems;
 	}
-
-	// nuevo constructor para hu 15
 	public Quest(String title, String description, int goldReward, int requiredDamage, int requiredDefense) {
 	    super();
 	    this.title = title;
@@ -45,12 +40,9 @@ public class Quest {
 
 	
 	public boolean checkRequirement(Player p) {
-		// si el interruptor es true, valida lo que el jugador lleva equipado
 		if (this.isEquipmentQuest) {
 			return p.getTotalEquippedDamage()>=this.requiredDamage &&  p.getTotalEquippedDefense()> this.requiredDefense;
 		}
-		
-		// si no se ejecuta el codigo de una mision normal que requiere algun objeto de inventario
 		boolean checksRequirement = false;
 		List<Item> inventory = p.getInventory();
 		if(inventory.containsAll(requiredItems)) {
@@ -59,8 +51,6 @@ public class Quest {
 		return checksRequirement;
 	}
 	
-	// completed pasa a true cuando el player completa la mision y no se puede volver
-	// a jugar la mision.
 	
 	public String getDescription() {
 		return description;

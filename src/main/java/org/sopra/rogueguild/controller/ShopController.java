@@ -86,9 +86,11 @@ public class ShopController {
                     break;
                 case 2:
                     view.displayStock(repository.getAllStock(), true);
+                    System.out.println("\n ---[0] Salir---\n");
+                    System.out.println("Escribe el ID del artículo a comprar, o 0 para salir");
                     String stringItem = sc.nextLine();
                     boolean isANumber = false;
-
+ 
                     String numbers = "0123456789";
                     if (!numbers.contains(stringItem) || stringItem.isEmpty()) {
                         while (!isANumber) {
@@ -100,35 +102,54 @@ public class ShopController {
                         }
                     }
                     int itemId = Integer.parseInt(stringItem);
-                   
+                   if(itemId ==0) {
+                	   System.out.println("Saliendo...");
+                   }else {
                     BuyResponse buyResponse = buyProcess(itemId);
-                    view.buyResult(buyResponse);
+                    view.buyResult(buyResponse);}
                     break;
 
                 case 3:
-                    int actualGoldReward = 0;
-                    Incursion incursion = selectIncursion();
-                    if (incursion != null) {
-                        if (incursion.getGoldReward() == 0) {
-                            System.out.println("No has obtenido oro. Tu item de recompensa es " + incursion.getItemReward().getName());
-                            player.addItem(incursion.getItemReward());
-                        } else if (incursion.getItemReward() == null) {
-                            System.out.println("No tienes item. Tu recompensa de oro es de " + incursion.getGoldReward() + " oro.");
-                            actualGoldReward = incursion.getGoldReward();
-                            goldRewardAcummulation += incursion.getGoldReward();
-                        } else {
-                            System.out.println("Has obtenido " + incursion.getGoldReward() + " de oro y el objeto " + incursion.getItemReward().getName());
-                            player.addItem(incursion.getItemReward());
-                            actualGoldReward = incursion.getGoldReward();
-                            goldRewardAcummulation += incursion.getGoldReward();
-                        }
-                        validateGoldReward(actualGoldReward);
-                    }
+                	 List<Item> inventarioVenta = player.getInventory();
+
+                     if (inventarioVenta.isEmpty()) {
+                         System.out.println("");
+                         System.out.println("[INFO] Tu inventario esta vacio. No tienes objetos para vender.");
+                     } else {
+                         System.out.println("");
+                         System.out.println("--- TU INVENTARIO (VENTA) ---");
+                     
+                         for (int i = 0; i < inventarioVenta.size(); i++) {
+                             Item item = inventarioVenta.get(i);
+                             System.out.println("[" + (i + 1) + "] " + item.getName() + " - Cat: " + item.getCategory() + " - Valor Base: " + item.getBasePrice() + " oro");
+                         }
+                         System.out.println("[0] Salir");
+                         System.out.println("-----------------------------");
+                         System.out.print("Selecciona el ID del item que quieres vender: ");
+
+                         try {
+                             int choiceVenta = Integer.parseInt(sc.nextLine()) ;
+                             if(choiceVenta == 0 ) {
+                            	 System.out.println("Saliendo...");
+                             } else {
+                            	choiceVenta = choiceVenta-1;
+                             if (choiceVenta >= 0 && choiceVenta < inventarioVenta.size()) {
+                                 Item itemAVender = inventarioVenta.get(choiceVenta);
+                                 sellProcess(itemAVender);
+                             } else {
+                                 System.out.println("[!] ID de objeto invalido. Operacion cancelada.");
+                             }}
+                         } catch (NumberFormatException e) {
+                             System.out.println("[!] Error: Introduce un numero valido.");
+                         }
+                     }
+                	
+                	///
+                  
                     break;
 
                 case 4:
                     System.out.println("");
-                    System.out.println("[!] Regresas de la incursion con exito");
                     repository.refreshStock();
                     System.out.println("[INFO] El mercader ha renovado su stock con nuevos generos");
                     break;
@@ -145,7 +166,7 @@ public class ShopController {
                     }
 
                     if (disponibles == 0) {
-                        System.out.println("[INFO] No hay misiones disponibles. ¡Las has completado todas!");
+                        System.out.println("[INFO] No hay misiones disponibles... Las has completado todas!");
                     } else {
                         for (int i = 0; i < quests.size(); i++) {
                             Quest q = quests.get(i);
@@ -154,12 +175,16 @@ public class ShopController {
                                 System.out.println("    Descripcion: " + q.getDescription());
                             }
                         }
+                        System.out.println("[0] Salir");
                         System.out.println("--------------------------------------");
                         System.out.print("Selecciona el ID de la mision para reclamar: ");
                         
                         try {
-                            int choice = Integer.parseInt(sc.nextLine()) - 1;
-                            
+                            int choice = Integer.parseInt(sc.nextLine()) ;
+                            if( choice ==0) {
+                            	System.out.println("Saliendo...");
+                            } else {
+                            	choice = choice-1;
                             if (choice >= 0 && choice < quests.size()) {
                                 Quest selectedQuest = quests.get(choice);
                                 
@@ -192,7 +217,7 @@ public class ShopController {
                                                 }
                                             }
                                         } else {
-                                            System.out.println("Asegurate de tener suficiente Ataque o Armadura activa en tu menu de equipamiento.");
+                                            System.out.println("Asegurate de tener suficiente Ataque o Armadura --activa-- en tu menu de equipamiento.");
                                         }
                                     }
                                 }
@@ -200,42 +225,31 @@ public class ShopController {
                             } else {
                                 System.out.println("[!] ID de mision invalido.");
                             }
-                        } catch (NumberFormatException e) {
+                        } }catch (NumberFormatException e) {
                             System.out.println("[!] Error: Introduce un numero valido.");
                         }
                     }
                     break;
                     
                 case 6:
-                    List<Item> inventarioVenta = player.getInventory();
-
-                    if (inventarioVenta.isEmpty()) {
-                        System.out.println("");
-                        System.out.println("[INFO] Tu inventario esta vacio. No tienes objetos para vender.");
-                    } else {
-                        System.out.println("");
-                        System.out.println("--- TU INVENTARIO (VENTA) ---");
-                    
-                        for (int i = 0; i < inventarioVenta.size(); i++) {
-                            Item item = inventarioVenta.get(i);
-                            System.out.println("[" + (i + 1) + "] " + item.getName() + " - Cat: " + item.getCategory() + " - Valor Base: " + item.getBasePrice() + " oro");
-                        }
-                        System.out.println("-----------------------------");
-                        System.out.print("Selecciona el ID del item que quieres vender: ");
-
-                        try {
-                            int choiceVenta = Integer.parseInt(sc.nextLine()) - 1;
-
-                            if (choiceVenta >= 0 && choiceVenta < inventarioVenta.size()) {
-                                Item itemAVender = inventarioVenta.get(choiceVenta);
-                                sellProcess(itemAVender);
-                            } else {
-                                System.out.println("[!] ID de objeto invalido. Operacion cancelada.");
-                            }
-                        } catch (NumberFormatException e) {
-                            System.out.println("[!] Error: Introduce un numero valido.");
-                        }
-                    }
+                	  int actualGoldReward = 0;
+                      Incursion incursion = selectIncursion();
+                      if (incursion != null) {
+                          if (incursion.getGoldReward() == 0) {
+                              System.out.println("No has obtenido oro. Tu item de recompensa es " + incursion.getItemReward().toString());
+                              player.addItem(incursion.getItemReward());
+                          } else if (incursion.getItemReward() == null) {
+                              System.out.println("No tienes item. Tu recompensa de oro es de " + incursion.getGoldReward() + " oro.");
+                              actualGoldReward = incursion.getGoldReward();
+                              goldRewardAcummulation += incursion.getGoldReward();
+                          } else {
+                              System.out.println("Has obtenido " + incursion.getGoldReward() + " de oro y el objeto " + incursion.getItemReward().toString());
+                              player.addItem(incursion.getItemReward());
+                              actualGoldReward = incursion.getGoldReward();
+                              goldRewardAcummulation += incursion.getGoldReward();
+                          }
+                          validateGoldReward(actualGoldReward);
+                      }
                     break;
                     
                 case 7:
@@ -247,21 +261,27 @@ public class ShopController {
                     } else {
                         System.out.println("");
                         System.out.println("--- MENU DE EQUIPAMIENTO ---");
+                       
                         for (int i = 0; i < mochilaEquipar.size(); i++) {
                             Item item = mochilaEquipar.get(i);
                             System.out.println("[" + (i + 1) + "] " + item.getName() + " (" + item.getCategory() + ")");
                         }
+                        System.out.println("[0] Salir");
                         System.out.println("----------------------------");
                         System.out.print("Selecciona el ID del objeto que quieres equipar: ");
                         
                         try {
-                            int choiceEquip = Integer.parseInt(sc.nextLine()) - 1;
+                        	  int choiceEquip = Integer.parseInt(sc.nextLine());
+                        	  if(choiceEquip == 0) {
+                        		  System.out.println("Saliendo...");
+                        	  }else {
+                             choiceEquip = choiceEquip - 1;
                             if (choiceEquip >= 0 && choiceEquip < mochilaEquipar.size()) {
                                 Item itemAEquipar = mochilaEquipar.get(choiceEquip);
                                 equipProcess(itemAEquipar);
                             } else {
                                 System.out.println("[!] ID de objeto invalido.");
-                            }
+                            }}
                         } catch (NumberFormatException e) {
                             System.out.println("[!] Error: Introduce un numero valido.");
                         }
@@ -275,8 +295,9 @@ public class ShopController {
                     System.out.println("Opción no reconocida, elige otra opción.");
                     break;
             }
-            view.pressKeyMessage();
-            sc.nextLine();
+            if(opt !=0) {
+           view.pressKeyMessage();
+           sc.nextLine();}
         } while (opt != 0);
     }
 
@@ -314,7 +335,7 @@ public class ShopController {
                 case 3:
                     incursion = generateMinorIncursion();
                     break;
-                case 4:
+                case 0:
                     System.out.println("Saliendo... incursión cancelada");
                     break;
                 default :

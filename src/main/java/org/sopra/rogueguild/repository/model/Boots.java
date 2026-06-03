@@ -10,4 +10,9 @@ public class Boots extends Item {
 	public int getQuality() {
         return this.quality;
     }
+	
+	@Override
+	public String toString() {
+		return super.toString()+" [ calidad : "+quality+ " ]";
+	}
 }
