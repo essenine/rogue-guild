@@ -376,7 +376,7 @@ public class ShopController {
                     break;
             }
         } catch(Exception e) {
-            System.out.println("Solo valores del 1-4. Saliendo de incursiones...");
+            System.out.println("Solo valores del 0-3. Saliendo de incursiones...");
         }
         return incursion;
     }
