@@ -213,7 +213,7 @@ public class ItemGenerator {
 		String generatedName = generatedPrefix+" "+generatedSuffix;
 		int price = generatePrice(prefixType);
 		ItemCategory category = ItemCategory.valueOf(prefixType);
-		int extraAttributeRandom = ((int) (Math.random() * 90 ) +10);
+		int extraAttributeRandom = ((int) (Math.random() * 90 ) +15);
 		
 		if(!itemExists(repository, generatedName)) {
 		switch (category) {

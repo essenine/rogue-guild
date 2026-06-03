@@ -274,7 +274,6 @@ public class ShopController {
                     System.out.println("Armadura Total: " + armaduraTotal);
                     System.out.println("---------------------------------");
 
-                    // 2. Lógica del menú de equipamiento
                     List<Item> mochilaEquipar = player.getInventory();
 
                     if (mochilaEquipar.isEmpty()) {
@@ -376,7 +375,7 @@ public class ShopController {
     private Incursion generateMinorIncursion() {
         int goldReward = (((int)(Math.random() * 51)) / 5) * 5;
         Item item = generateMinorItem();
-        Incursion minorIncursion = new Incursion("minor", "Incursión mixta", goldReward, item);
+        Incursion minorIncursion = new Incursion("minor", "Nos vamos de incursión!", goldReward, item);
         return minorIncursion;
     }
     
