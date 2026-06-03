@@ -22,7 +22,7 @@ public class EventView {
 	        out.println(" 	      | " + c(RED, "°。°。°。°。°。°。---WORLD EVENT ---°。°。°。°。°。°。") + " |");
 	        out.println(" 	      | " + c(RED, " °。°。°。°。°。Hay un nuevo evento!!!!!°。°。°。") + "   |");
 	        out.println("                                       ");
-	        out.println("               "+worldEvent.getDescription()); 
+	        out.println("             "+worldEvent.getDescription()); 
 	        out.println("----------------------------------------------------------------------------------");
 	        out.println("----------------------------------------------------------------------------------");
 	    }

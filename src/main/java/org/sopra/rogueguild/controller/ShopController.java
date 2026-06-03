@@ -59,7 +59,7 @@ public class ShopController {
         do {
             view.landingPage();
             view.playerStatus(player);
-           
+            System.out.print("       INSERTA LA OPCIÓN DESEADA:  ");
             stringOpt = sc.nextLine();
             stringOpt = stringOpt.trim();
             
@@ -136,7 +136,7 @@ public class ShopController {
                                  Item itemAVender = inventarioVenta.get(choiceVenta);
                                  sellProcess(itemAVender);
                              } else {
-                                 System.out.println("[!] ID de objeto invalido. Operacion cancelada.");
+                            	 System.out.println("[!] ID de objeto invalido. Operacion cancelada.");
                              }}
                          } catch (NumberFormatException e) {
                              System.out.println("[!] Error: Introduce un numero valido.");
@@ -154,100 +154,100 @@ public class ShopController {
                     break;
 
                 case 5:
-                    System.out.println("");
-                    System.out.println("--- TABLON DE MISIONES DISPONIBLES ---");
-                    
-                    int disponibles = 0;
-                    for (int i = 0; i < quests.size(); i++) {
-                        if (!quests.get(i).isCompleted()) {
-                            disponibles++;
+                	int actualGoldReward = 0;
+                    Incursion incursion = selectIncursion();
+                    if (incursion != null) {
+                        if (incursion.getGoldReward() == 0) {
+                            System.out.println("No has obtenido oro. Tu item de recompensa es " + incursion.getItemReward().toString());
+                            player.addItem(incursion.getItemReward());
+                        } else if (incursion.getItemReward() == null) {
+                            System.out.println("No tienes item. Tu recompensa de oro es de " + incursion.getGoldReward() + " oro.");
+                            actualGoldReward = incursion.getGoldReward();
+                            goldRewardAcummulation += incursion.getGoldReward();
+                        } else {
+                            System.out.println("Has obtenido " + incursion.getGoldReward() + " de oro y el objeto " + incursion.getItemReward().toString());
+                            player.addItem(incursion.getItemReward());
+                            actualGoldReward = incursion.getGoldReward();
+                            goldRewardAcummulation += incursion.getGoldReward();
                         }
-                    }
-
-                    if (disponibles == 0) {
-                        System.out.println("[INFO] No hay misiones disponibles... Las has completado todas!");
-                    } else {
-                        for (int i = 0; i < quests.size(); i++) {
-                            Quest q = quests.get(i);
-                            if (!q.isCompleted()) {
-                                System.out.println("[" + (i + 1) + "] " + q.getTitle() + " - Premio: " + q.getGoldReward() + " oro");
-                                System.out.println("    Descripcion: " + q.getDescription());
-                            }
-                        }
-                        System.out.println("[0] Salir");
-                        System.out.println("--------------------------------------");
-                        System.out.print("Selecciona el ID de la mision para reclamar: ");
-                        
-                        try {
-                            int choice = Integer.parseInt(sc.nextLine()) ;
-                            if( choice ==0) {
-                            	System.out.println("Saliendo...");
-                            } else {
-                            	choice = choice-1;
-                            if (choice >= 0 && choice < quests.size()) {
-                                Quest selectedQuest = quests.get(choice);
-                                
-                                if (selectedQuest.isCompleted()) {
-                                    System.out.println("[!] Esa mision ya no esta disponible.");
-                                } else {
-                                    if (selectedQuest.checkRequirement(player)) {
-                                        selectedQuest.setCompleted(true);
-                                        player.addGold(selectedQuest.getGoldReward());
-                                        
-                                        System.out.println("");
-                                        System.out.println("[!] ¡MISION COMPLETADA CON EXITO!");
-                                        System.out.println("[!] Has reclamado: " + selectedQuest.getTitle());
-                                        System.out.println("[!] Oro obtenido: " + selectedQuest.getGoldReward() + " monedas de oro.");
-                                        
-                                        repository.refreshStock();
-                                    } else {
-                                        System.out.println("");
-                                        System.out.println("[X] No cumples los requisitos para reclamar esta mision.");
-                                        
-                                        List<Item> requeridos = selectedQuest.getRequiredItems();
-                                        
-                                        if (requeridos != null && !requeridos.isEmpty()) {
-                                            System.out.println("Te falta tener en el inventario:");
-                                            List<Item> inventario = player.getInventory();
-                                            for (int i = 0; i < requeridos.size(); i++) {
-                                                Item req = requeridos.get(i);
-                                                if (!inventario.contains(req)) {
-                                                    System.out.println("    - " + req.getName());
-                                                }
-                                            }
-                                        } else {
-                                            System.out.println("Asegurate de tener suficiente Ataque o Armadura --activa-- en tu menu de equipamiento.");
-                                        }
-                                    }
-                                }
-                                
-                            } else {
-                                System.out.println("[!] ID de mision invalido.");
-                            }
-                        } }catch (NumberFormatException e) {
-                            System.out.println("[!] Error: Introduce un numero valido.");
-                        }
+                        validateGoldReward(actualGoldReward);
                     }
                     break;
                     
                 case 6:
-                	  int actualGoldReward = 0;
-                      Incursion incursion = selectIncursion();
-                      if (incursion != null) {
-                          if (incursion.getGoldReward() == 0) {
-                              System.out.println("No has obtenido oro. Tu item de recompensa es " + incursion.getItemReward().toString());
-                              player.addItem(incursion.getItemReward());
-                          } else if (incursion.getItemReward() == null) {
-                              System.out.println("No tienes item. Tu recompensa de oro es de " + incursion.getGoldReward() + " oro.");
-                              actualGoldReward = incursion.getGoldReward();
-                              goldRewardAcummulation += incursion.getGoldReward();
-                          } else {
-                              System.out.println("Has obtenido " + incursion.getGoldReward() + " de oro y el objeto " + incursion.getItemReward().toString());
-                              player.addItem(incursion.getItemReward());
-                              actualGoldReward = incursion.getGoldReward();
-                              goldRewardAcummulation += incursion.getGoldReward();
+                      System.out.println("");
+                      System.out.println("--- TABLON DE MISIONES DISPONIBLES ---");
+                      
+                      int disponibles = 0;
+                      for (int i = 0; i < quests.size(); i++) {
+                          if (!quests.get(i).isCompleted()) {
+                              disponibles++;
                           }
-                          validateGoldReward(actualGoldReward);
+                      }
+
+                      if (disponibles == 0) {
+                          System.out.println("[INFO] No hay misiones disponibles... Las has completado todas!");
+                      } else {
+                          for (int i = 0; i < quests.size(); i++) {
+                              Quest q = quests.get(i);
+                              if (!q.isCompleted()) {
+                                  System.out.println("[" + (i + 1) + "] " + q.getTitle() + " - Premio: " + q.getGoldReward() + " oro");
+                                  System.out.println("    Descripcion: " + q.getDescription());
+                              }
+                          }
+                          System.out.println("[0] Salir");
+                          System.out.println("--------------------------------------");
+                          System.out.print("Selecciona el ID de la mision para reclamar: ");
+                          
+                          try {
+                              int choice = Integer.parseInt(sc.nextLine()) ;
+                              if( choice ==0) {
+                              	System.out.println("Saliendo...");
+                              } else {
+                              	choice = choice-1;
+                              if (choice >= 0 && choice < quests.size()) {
+                                  Quest selectedQuest = quests.get(choice);
+                                  
+                                  if (selectedQuest.isCompleted()) {
+                                      System.out.println("[!] Esa mision ya no esta disponible.");
+                                  } else {
+                                      if (selectedQuest.checkRequirement(player)) {
+                                          selectedQuest.setCompleted(true);
+                                          player.addGold(selectedQuest.getGoldReward());
+                                          
+                                          System.out.println("");
+                                          System.out.println("[!] ¡MISION COMPLETADA CON EXITO!");
+                                          System.out.println("[!] Has reclamado: " + selectedQuest.getTitle());
+                                          System.out.println("[!] Oro obtenido: " + selectedQuest.getGoldReward() + " monedas de oro.");
+                                          
+                                          repository.refreshStock();
+                                      } else {
+                                          System.out.println("");
+                                          System.out.println("[X] No cumples los requisitos para reclamar esta mision.");
+                                          
+                                          List<Item> requeridos = selectedQuest.getRequiredItems();
+                                          
+                                          if (requeridos != null && !requeridos.isEmpty()) {
+                                              System.out.println("Te falta tener en el inventario:");
+                                              List<Item> inventario = player.getInventory();
+                                              for (int i = 0; i < requeridos.size(); i++) {
+                                                  Item req = requeridos.get(i);
+                                                  if (!inventario.contains(req)) {
+                                                      System.out.println("    - " + req.getName());
+                                                  }
+                                              }
+                                          } else {
+                                              System.out.println("Asegurate de tener suficiente Ataque o Armadura --activa-- en tu menu de equipamiento.");
+                                          }
+                                      }
+                                  }
+                                  
+                              } else {
+                                  System.out.println("[!] ID de mision invalido.");
+                              }
+                          } }catch (NumberFormatException e) {
+                              System.out.println("[!] Error: Introduce un numero valido.");
+                          }
                       }
                     break;
                     

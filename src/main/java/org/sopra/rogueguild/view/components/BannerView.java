@@ -25,8 +25,8 @@ public class BannerView {
         out.println("     || |  [2] Comprar un producto                      | ||");
         out.println("     || |  [3] Vender Objetos                           | ||");
         out.println("     || |  [4] Renovar Stock de la tienda               | ||");
-        out.println("     || |  [5] Tablon de Misiones                       | ||");
-        out.println("     || |  [6] Ingresar a las incursiones               | ||");
+        out.println("     || |  [5] Ingresar a las incursiones               | ||");
+        out.println("     || |  [6] Tablon de Misiones                       | ||");
         out.println("     || |  [7] Menu de Equipamiento                     | ||");
         out.println("     || |" + c(Ansi.GRAY, "  [0] Salir                                    ") + "| ||");
         out.println("     || \\_______________________________________________/ ||");

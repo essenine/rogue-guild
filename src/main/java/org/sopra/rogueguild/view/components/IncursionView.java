@@ -17,8 +17,8 @@ public class IncursionView {
     public void incursionPage() {
         out.println("  ___________________________________________________");
         out.println(" /  _______________________________________________  \\");
-        out.println("|| /                                               \\ ||");
-       out.println("|| |                    INCURSIONES                  | ||");
+        out.println("|| /                                               \\||");
+        out.println("|| |                    INCURSIONES                | ||");
         out.println("|| | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ | ||");
         out.println("|| |  [1] Incursión de conquista                   | ||");
         out.println("|| |  [2] Incursión de saqueo                      | ||");
