@@ -47,6 +47,7 @@ public class ShopController {
         reqFenix.add(new Boots("Botas de Cuero", 50, 5));
         this.quests.add(new Quest("Caballero del Fénix", "Requiere tener el set completo: Espada del Alba, Casco de Hierro, Coraza de Acero y Botas de Cuero", 300, reqFenix));
         this.quests.add(new Quest("Bastion Inquebrantable", "Requiere tener equipado un minimo de 40 de armadura total", 400, 0, 40));
+        this.quests.add(new Quest("Filo Imparable", "Requiere tener equipado un minimo de 35 de ataque total", 250, 35, 0));
     }
 
     public void start() {
