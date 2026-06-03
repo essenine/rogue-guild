@@ -357,12 +357,16 @@ public class ShopController {
             switch(opt) {
                 case 1:
                     incursion = generateCoquerIncursion();
+                    System.out.println(incursion.getDescription());
                     break;
                 case 2:
                     incursion = generateLootIncursion();
+                    System.out.println(incursion.getDescription());
                     break;
                 case 3:
                     incursion = generateMinorIncursion();
+
+                    System.out.println(incursion.getDescription());
                     break;
                 case 0:
                     System.out.println("Saliendo... incursión cancelada");
