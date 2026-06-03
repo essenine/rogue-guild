@@ -326,22 +326,27 @@ public class ShopController {
 
     private void validateGoldReward(int actualGoldReward) {
         int LIMITE_MAXIMO = 500;
-        int oroActual = player.getGold();
-
+        
       
-        if (oroActual + actualGoldReward <= LIMITE_MAXIMO) {
+        if (goldRewardAcummulation <= LIMITE_MAXIMO) {    
             player.addGold(actualGoldReward);
-            System.out.println("Se ha añadido " + actualGoldReward + " monedas a tu inventario.");
+            System.out.println("Se ha añadido " + actualGoldReward + " oro a tu inventario");
         } else {
           
-            int espacioRestante = LIMITE_MAXIMO - oroActual;
+            System.out.println("Has llegado al limite de recompensas por incursiones (500)");
             
-            if (espacioRestante > 0) {
-                player.addGold(espacioRestante);
-                System.out.println("Has alcanzado el límite de 500. Solo se han añadido " + espacioRestante + " monedas.");
+        
+            int goldDifference = LIMITE_MAXIMO - (goldRewardAcummulation - actualGoldReward);
+            
+            if (goldDifference > 0) {
+                System.out.println("Tu recompensa se ajusta a: " + goldDifference + " oro");
+                player.addGold(goldDifference);
             } else {
-                System.out.println("Ya tienes el máximo (500 monedas). No se puede añadir más oro.");
+                System.out.println("No se añade mas oro de incursiones por hoy");
             }
+            
+         
+            goldRewardAcummulation = LIMITE_MAXIMO + 1;
         }
     }
     private Incursion selectIncursion() {
